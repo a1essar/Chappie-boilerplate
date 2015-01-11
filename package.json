@@ -1,17 +1,6 @@
 {
   "name": "chappie-boilerplate",
   "version": "0.0.0",
-  "dependencies": {
-    "browser-sync": "^1.8.3",
-    "del": "^1.1.1",
-    "gulp": "^3.8.10",
-    "gulp-clean": "^0.3.1",
-    "gulp-csso": "^0.2.9",
-    "gulp-concat": "^2.4.3",
-    "gulp-autoprefixer": "^2.0.0",
-    "less": "^2.2.0",
-    "bower": "^1.3.12"
-  },
   "engines": {
     "node": ">=0.10.35"
   },
@@ -19,5 +8,24 @@
   "scripts": {
     "test": "",
     "postinstall": "node ./node_modules/bower/bin/bower install && node ./node_modules/bower/bin/bower update"
+  },
+  "devDependencies": {
+    "autoprefixer-core": "^4.0.2",
+    "bower": "^1.3.12",
+    "browser-sync": "^1.8.3",
+    "del": "^1.1.1",
+    "event-stream": "^3.2.1",
+    "gulp": "^3.8.10",
+    "gulp-concat": "^2.4.3",
+    "gulp-csso": "^0.2.9",
+    "gulp-if": "^1.2.5",
+    "gulp-plumber": "^0.6.6",
+    "gulp-rewrite-css": "git://github.com/a1essar/gulp-rewrite-css.git#master",
+    "lazypipe": "^0.2.2",
+    "less": "^2.2.0",
+    "main-bower-files": "^2.4.1",
+    "requirejs": "^2.1.15",
+    "rimraf": "^2.2.8",
+    "underscore": "^1.7.0"
   }
 }
