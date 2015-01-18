@@ -1,6 +1,6 @@
 /**
  *
- * todo: css sourcemaps, js hint js lint and css lint, compress images, sprites, environment, create webfont, fonts copmress,
+ * todo: less, js hint js lint and css lint, compress images, sprites, environment, create webfont, fonts copmress,
  */
 
 'use strict';
@@ -18,6 +18,7 @@ var gulpIf = require('gulp-if');
 var gulpConcat = require('gulp-concat');
 var gulpPlumber = require('gulp-plumber');
 var gulpCsso = require('gulp-csso');
+var gulpSourcemaps = require('gulp-sourcemaps');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -36,7 +37,7 @@ var options = {
 };
 
 options.paths = {
-    'styles': ['app/client/styles/*.css', 'app/client/styles/less/*.less', 'app/client/styles/less/**/*.less'],
+    'styles': ['app/client/styles/css/*.css', 'app/client/styles/less/*.less', 'app/client/styles/less/**/*.less'],
     'scripts': ['app/client/scripts/js/*.js', 'app/client/scripts/js/**/*.js'],
     'dest': {
         'scripts': 'app/public/scripts/js',
@@ -50,11 +51,15 @@ options.paths = {
 
 var styles = lazypipe()
     .pipe(gulpPlumber)
-    .pipe(gulpConcat, options.paths.dest.styleFileName)
-    .pipe(lessRender)
+    .pipe(gulpSourcemaps.init)
+    .pipe(function(){
+        return gulpIf(/.less/, lessRender());
+    })
     .pipe(urlRebase)
     .pipe(autoprefixerRender)
     .pipe(gulpCsso)
+    .pipe(gulpConcat, options.paths.dest.styleFileName)
+    .pipe(gulpSourcemaps.write)
     .pipe(gulp.dest, options.paths.dest.styles);
 
 var fonts = lazypipe()
@@ -62,12 +67,6 @@ var fonts = lazypipe()
 
 var images = lazypipe()
     .pipe(gulp.dest, options.paths.dest.images);
-
-gulp.task('styles', ['clean:styles'], function() {
-    return gulp.src(options.paths.styles)
-        .pipe(styles())
-        ;
-});
 
 gulp.task('scripts', ['clean:scripts'], function(callback) {
     var vendors = mainBowerFiles({
@@ -117,7 +116,7 @@ gulp.task('scripts', ['clean:scripts'], function(callback) {
     }, callback);
 });
 
-gulp.task('bower', function() {
+gulp.task('styles', ['clean:styles'], function() {
     var vendors = mainBowerFiles({
         paths: {
             paths: './',
@@ -189,36 +188,56 @@ gulp.task('clean:images', function(callback) {
     rimraf('app/public/images', callback);
 });
 
-gulp.task('go', ['copy', 'images', 'fonts', 'styles', 'scripts', 'bower']);
+gulp.task('go', ['copy', 'images', 'fonts', 'styles', 'scripts']);
 gulp.task('default', ['styles']);
 
 function lessRender() {
-    function render(file, callback) {
-        var content = file.contents.toString('utf8');
-        var css = '';
+    var data;
+    var content = new Buffer(0);
 
-        less.render(content, {
+    function bufferContents(file){
+        if (file.isNull()) {
+            return;
+        }
+
+        data = file;
+
+        if (content.length !== 0) {
+            content = Buffer.concat([content, new Buffer(0)]);
+        }
+
+        content = Buffer.concat([content, new Buffer(file.contents)]);
+    }
+
+    function endStream(){
+        if (!data) {
+            return this.emit('end');
+        }
+
+        var _this = this;
+
+        less.render(content.toString('utf8'), {
             compress: false,
             paths: [],
             sourceMap: false
-        }, function(e, output){
-            if(output && output.css){
-                css += output.css;
+        }).then(
+            function(output) {
+                data.contents = new Buffer(output.css);
+                _this.emit('data', data);
+                _this.emit('end');
+            },
+            function(error) {
+                console.log(error);
             }
-        });
-
-        file.contents = new Buffer(css);
-
-        callback(null, file);
+        );
     }
 
-    return es.map(render);
+    return es.through(bufferContents, endStream);
 }
 
 function autoprefixerRender() {
     function render(file, callback) {
         var content = file.contents.toString('utf8');
-
         var css = autoprefixer({ browsers: options.autoprefixerOptions }).process(content).css;
 
         file.contents = new Buffer(css);
