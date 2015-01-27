@@ -1,6 +1,6 @@
 /**
  *
- * todo: less, js hint js lint and css lint, compress images, sprites, environment, create webfont, fonts copmress,
+ * todo: less sourcemap, js hint js lint and css lint, compress images, sprites, environment, create webfont, fonts copmress,
  */
 
 'use strict';
