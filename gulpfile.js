@@ -84,7 +84,7 @@ gulp.task('scripts', ['clean:scripts'], function(callback) {
     var excluded = ['almond'];
 
     vendors.map(function(el){
-        el = el.replace(/.js/g, '');
+        el = el.replace(/.js$/, '');
         var name = path.basename(el);
 
         if(excluded.indexOf(name) >= 0){
@@ -94,15 +94,13 @@ gulp.task('scripts', ['clean:scripts'], function(callback) {
         modules[name] = path.relative(baseUrl, el);
     });
 
-    modules['app'] = 'app';
-
     rjs.optimize({
         baseUrl: baseUrl,
         paths: modules,
-        name: '../../../../vendor/almond/almond',
+        name: path.relative(baseUrl, 'vendor/almond/almond'),
         include: ['common'],
-        insertRequire: ['../../../../vendor/almond/almond'],
-        out: 'app/public/scripts/js/script.min.js',
+        insertRequire: [path.relative(baseUrl, 'vendor/almond/almond')],
+        out: options.paths.dest.scripts + '/script.min.js',
         optimize: "uglify2",
         uglify2: {
             compress: {

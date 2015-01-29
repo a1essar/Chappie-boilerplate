@@ -1,42 +1,45 @@
 define('app', [
+    'domReady',
     'jquery',
     'underscore',
     'backbone',
     'modernizr',
-    'detectizr'
-],  function ( $, _, Backbone, Modernizr, Detectizr ) {
+    'detectizr',
+    'text!../../json/config.json',
+    'utils',
+    'modules/module-1'
+],  function ( domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Module1 ) {
     'use strict';
 
+    console.log('%cfile: app.js', 'color: #C2ECFF');
+
+    /** private */
     var _this;
-    
-    var defaults = {
-        language: 'ru'
-    };
+    var _defaults = JSON.parse(config);
 
-    function App(options){
-        console.log('%ctrace: App', 'color: #ccc');
-
-        this.options = $.extend({
-        }, defaults, options);
-
-        this.dom = {};
-
-        this.dom.$body = $('body');
+    /** constructor */
+    function App(){
+        console.log('%ctrace: App -> constructor', 'color: #ccc');
 
         _this = this;
 
-        if (!window.location.origin) {
-            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-        }
+        /** public */
+        this.options = _.extend({
 
-        _this.initialize();
+            },
+            _defaults
+        );
+
+        utils.shims();
+
+        var module1 = new Module1({
+            'foo': 'bar'
+        });
+
+        domReady(function () {
+            console.log(utils.query('body'));
+        });
     }
-    
-    App.prototype = {
-        initialize: function(){
-            console.log('%ctrace: App -> initialize', 'color: #ccc');
-        },
-    };
     
     return App;
 });
