@@ -1,6 +1,5 @@
 /**
  *
- * todo: less sourcemap, js hint js lint and css lint, compress images, sprites, environment, create webfont, fonts copmress,
  */
 
 'use strict';
@@ -37,15 +36,15 @@ var options = {
 };
 
 options.paths = {
-    'styles': ['app/client/styles/css/*.css', 'app/client/styles/less/*.less', 'app/client/styles/less/**/*.less'],
-    'scripts': ['app/client/scripts/js/*.js', 'app/client/scripts/js/**/*.js'],
+    'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
+    'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     'dest': {
-        'scripts': 'app/public/scripts/js',
+        'scripts': 'dist/scripts/js',
         'scriptFileName': 'script.min.js',
-        'styles': 'app/public/styles/css',
+        'styles': 'dist/styles/css',
         'styleFileName': 'style.min.css',
-        'fonts': 'app/public/fonts',
-        'images': 'app/public/images',
+        'fonts': 'dist/fonts',
+        'images': 'dist/images',
     }
 };
 
@@ -55,6 +54,7 @@ var styles = lazypipe()
     .pipe(function(){
         return gulpIf(/.less/, lessRender());
     })
+    .pipe(testPipe)
     .pipe(urlRebase)
     .pipe(autoprefixerRender)
     .pipe(gulpCsso)
@@ -80,7 +80,7 @@ gulp.task('scripts', ['clean:scripts'], function(callback) {
     });
 
     var modules = {};
-    var baseUrl = 'app/client/scripts/js';
+    var baseUrl = 'src/client/scripts/js';
     var excluded = ['almond'];
 
     vendors.map(function(el){
@@ -136,54 +136,54 @@ gulp.task('styles', ['clean:styles'], function() {
 
 gulp.task('fonts', ['clean:fonts'], function () {
     return gulp.src([
-        'app/client/fonts/*'
+        'src/client/fonts/*'
     ]).pipe(fonts());
 });
 
 gulp.task('images', ['clean:images'], function (callback) {
     return gulp.src([
-        'app/client/images/*'
+        'src/client/images/*'
     ])
     .pipe(images());
 });
 
 gulp.task('copy', ['clean'], function (callback) {
     return gulp.src([
-        'app/client/*',
-        '!app/client/fonts',
-        '!app/client/images',
-        '!app/client/scripts',
-        '!app/client/styles',
+        'src/client/*',
+        '!src/client/fonts',
+        '!src/client/images',
+        '!src/client/scripts',
+        '!src/client/styles',
     ], {
         dot: true
-    }).pipe(gulp.dest('app/public'));
+    }).pipe(gulp.dest('dist'));
 });
 
 gulp.task('clean', function(callback) {
     del([
-        'app/public/*',
-        '!app/public/scripts',
-        '!app/public/styles',
-        '!app/public/fonts',
-        '!app/public/images',
-        '!app/public/templates',
+        'dist/*',
+        '!dist/scripts',
+        '!dist/styles',
+        '!dist/fonts',
+        '!dist/images',
+        '!dist/templates',
     ], { force: false }, callback);
 });
 
 gulp.task('clean:scripts', function(callback) {
-    rimraf('app/public/scripts', callback);
+    rimraf('dist/scripts', callback);
 });
 
 gulp.task('clean:styles', function(callback) {
-    rimraf('app/public/styles', callback);
+    rimraf('dist/styles', callback);
 });
 
 gulp.task('clean:fonts', function(callback) {
-    rimraf('app/public/fonts', callback);
+    rimraf('dist/fonts', callback);
 });
 
 gulp.task('clean:images', function(callback) {
-    rimraf('app/public/images', callback);
+    rimraf('dist/images', callback);
 });
 
 gulp.task('go', ['copy', 'images', 'fonts', 'styles', 'scripts']);
