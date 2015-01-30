@@ -11,6 +11,8 @@ var es = require('event-stream');
 var rjs = require('requirejs');
 var autoprefixer = require('autoprefixer-core');
 var less = require('less');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 var gulp = require('gulp');
 var gulpIf = require('gulp-if');
 var gulpConcat = require('gulp-concat');
@@ -99,19 +101,6 @@ options.paths = {
     }
 };
 
-var styles = lazypipe()
-    .pipe(gulpPlumber)
-    .pipe(gulpSourcemaps.init)
-    .pipe(function(){
-        return gulpIf(/.less/, lessRender());
-    })
-    .pipe(urlRebase)
-    .pipe(autoprefixerRender)
-    .pipe(gulpCsso)
-    .pipe(gulpConcat, options.paths.dest.styleFileName)
-    .pipe(gulpSourcemaps.write, '.')
-    .pipe(gulp.dest, options.paths.dest.styles);
-
 var fonts = lazypipe()
     .pipe(gulp.dest, options.paths.dest.fonts);
 
@@ -171,14 +160,23 @@ gulp.task('styles', ['clean:styles'], function() {
             bowerDirectory: 'vendor',
             bowerrc: '.bowerrc',
             bowerJson: 'bower.json'
-        }
+        },
+        filter: /.less|.css/
     });
 
     vendors = _.union(vendors, options.paths.styles);
 
     return gulp.src(vendors)
         .pipe(gulpPlumber())
-        .pipe(gulpIf(/.less|.css/, styles()))
+        .pipe(gulpSourcemaps.init())
+        .pipe(gulpIf(/.less/, lessRender()))
+        .pipe(urlRebase())
+        .pipe(autoprefixerRender())
+        .pipe(gulpCsso())
+        .pipe(gulpConcat(options.paths.dest.styleFileName))
+        .pipe(gulpSourcemaps.write('.'))
+        .pipe(gulp.dest(options.paths.dest.styles))
+        .pipe(reload({stream:true}))
         ;
 });
 
@@ -272,6 +270,17 @@ gulp.task('clean:svg', function(callback) {
 });
 
 gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg']);
+
+/* todo: live reload */
+gulp.task('browser-sync', function() {
+    browserSync({
+        files: "dist/styles/css/*.css"
+    },{
+        server: {
+            baseDir: "./dist"
+        }
+    });
+});
 
 gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'styles', 'scripts']);
 

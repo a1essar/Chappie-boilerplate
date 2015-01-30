@@ -17,7 +17,7 @@ ___
     * ~~Less~~
     * ~~Requirejs~~
     * Development or production environment
-    * Watchers
+    * ~~Watchers~~
     * Live reload and edit
     * Images optimization
     * Creating sprites
