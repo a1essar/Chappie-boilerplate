@@ -54,12 +54,11 @@ var styles = lazypipe()
     .pipe(function(){
         return gulpIf(/.less/, lessRender());
     })
-    .pipe(testPipe)
     .pipe(urlRebase)
     .pipe(autoprefixerRender)
     .pipe(gulpCsso)
     .pipe(gulpConcat, options.paths.dest.styleFileName)
-    .pipe(gulpSourcemaps.write)
+    .pipe(gulpSourcemaps.write, '.')
     .pipe(gulp.dest, options.paths.dest.styles);
 
 var fonts = lazypipe()
@@ -129,7 +128,7 @@ gulp.task('styles', ['clean:styles'], function() {
     return gulp.src(vendors)
         .pipe(gulpPlumber())
         .pipe(gulpIf(/.less|.css/, styles()))
-        .pipe(gulpIf(/.eot|.svg|.ttf|.woff/, fonts()))
+        .pipe(gulpIf(/.eot|.svg|.ttf|.woff|.woff2/, fonts()))
         .pipe(gulpIf(/.jpg|.png|.gif|.jpeg/, images()))
         ;
 });
@@ -190,21 +189,25 @@ gulp.task('go', ['copy', 'images', 'fonts', 'styles', 'scripts']);
 gulp.task('default', ['styles']);
 
 function lessRender() {
-    var data;
+    var data = [];
     var content = new Buffer(0);
+    var markerStart = '/*start file*/';
+    var markerStartRegex = /(\/\*start file\*\/)/g;
+    var markerEnd = '/*end file*/';
+    var markerEndRegex = /(\/\*end file\*\/)/g;
 
     function bufferContents(file){
         if (file.isNull()) {
             return;
         }
 
-        data = file;
+        data.push(file);
 
         if (content.length !== 0) {
             content = Buffer.concat([content, new Buffer(0)]);
         }
 
-        content = Buffer.concat([content, new Buffer(file.contents)]);
+        content = Buffer.concat([content, new Buffer(markerStart + '/* ' + path.basename(file.history) + ' */' + file.contents + markerEnd)]);
     }
 
     function endStream(){
@@ -220,9 +223,28 @@ function lessRender() {
             sourceMap: false
         }).then(
             function(output) {
-                data.contents = new Buffer(output.css);
-                _this.emit('data', data);
-                _this.emit('end');
+                var css = output.css;
+                var markerStartIndex = [];
+                var markerEndIndex = [];
+
+                css.replace(markerStartRegex, function (a, b, index) {
+                    markerStartIndex.push(index);
+                });
+
+                css.replace(markerEndRegex, function (a, b, index) {
+                    markerEndIndex.push(index);
+                });
+
+                for(var i = 0; i <= data.length - 1; i++){
+                    var cssPart = css.substring(markerStartIndex[i] + markerStart.length, markerEndIndex[i]);
+
+                    data[i].contents = new Buffer(cssPart);
+                    _this.emit('data', data[i]);
+
+                    if(i == data.length - 1){
+                        _this.emit('end');
+                    }
+                }
             },
             function(error) {
                 console.log(error);
