@@ -22,6 +22,8 @@ var gulpRimraf = require('gulp-rimraf');
 var gulpFilter = require('gulp-filter');
 var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpGzip = require('gulp-gzip');
+var gulpImage = require('gulp-image');
+var gulpWebp = require('gulp-webp');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -59,6 +61,10 @@ options.paths = {
     'fontsConverts': {
         'src': 'src/client/fonts/*.ttf',
         'dest': 'src/client/fonts'
+    },
+    'optimizeImages': {
+        'src': 'src/client/images/*',
+        'dest': 'src/client/images',
     },
     'gzip': {
         'styles': ['dist/styles/css/*.css', 'dist/styles/css/*.map'],
@@ -110,12 +116,6 @@ options.paths = {
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     }
 };
-
-var fonts = lazypipe()
-    .pipe(gulp.dest, options.paths.dest.fonts);
-
-var images = lazypipe()
-    .pipe(gulp.dest, options.paths.dest.images);
 
 gulp.task('scripts', ['clean:scripts'], function(callback) {
     var vendors = mainBowerFiles({
@@ -291,6 +291,20 @@ gulp.task('ttf2woff', function(){
         .pipe(gulp.dest(options.paths.fontsConverts.dest));
 });
 
+gulp.task('optimize-images', function () {
+    return gulp.src(options.paths.optimizeImages.src)
+        .pipe(gulpImage())
+        .pipe(gulp.dest(options.paths.optimizeImages.dest))
+        ;
+});
+
+gulp.task('images-to-webp', function () {
+    return gulp.src(options.paths.optimizeImages.src)
+        .pipe(gulpWebp({quality: 60}))
+        .pipe(gulp.dest(options.paths.optimizeImages.dest))
+        ;
+});
+
 gulp.task('gzip:styles', function(){
     gulp.src(options.paths.gzip.styles)
         .pipe(gulpGzip())
@@ -431,7 +445,7 @@ function urlRebase() {
                 return "url(\"../../fonts/" + filename + "\")";
             }
 
-            if(filename.indexOf('jpg') >= 0 || filename.indexOf('png') >= 0 || filename.indexOf('gif') >= 0 || filename.indexOf('jpeg') >= 0){
+            if(filename.indexOf('jpg') >= 0 || filename.indexOf('png') >= 0 || filename.indexOf('gif') >= 0 || filename.indexOf('jpeg') >= 0 || filename.indexOf('webp') >= 0){
                 return "url(\"../../images/" + filename + "\")";
             }
         });
