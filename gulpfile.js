@@ -12,7 +12,6 @@ var rjs = require('requirejs');
 var autoprefixer = require('autoprefixer-core');
 var less = require('less');
 var browserSync = require('browser-sync');
-var reload = browserSync.reload;
 var gulp = require('gulp');
 var gulpIf = require('gulp-if');
 var gulpConcat = require('gulp-concat');
@@ -20,6 +19,7 @@ var gulpPlumber = require('gulp-plumber');
 var gulpCsso = require('gulp-csso');
 var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpRimraf = require('gulp-rimraf');
+var gulpFilter = require('gulp-filter');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -176,7 +176,8 @@ gulp.task('styles', ['clean:styles'], function() {
         .pipe(gulpConcat(options.paths.dest.styleFileName))
         .pipe(gulpSourcemaps.write('.'))
         .pipe(gulp.dest(options.paths.dest.styles))
-        .pipe(reload({stream:true}))
+        .pipe(gulpFilter('*.css'))
+        .pipe(browserSync.reload({stream:true}))
         ;
 });
 
@@ -231,7 +232,10 @@ gulp.task('copy:json', ['clean:json'], function (callback) {
 });
 
 gulp.task('copy:main', ['clean:main'], function (callback) {
-    return gulp.src(options.paths.main).pipe(gulp.dest(options.paths.dest.main));
+    return gulp.src(options.paths.main)
+        .pipe(gulp.dest(options.paths.dest.main))
+        .pipe(browserSync.reload({stream:true}))
+        ;
 });
 
 gulp.task('clean:main', function(callback) {
@@ -271,22 +275,19 @@ gulp.task('clean:svg', function(callback) {
 
 gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg']);
 
-/* todo: live reload */
 gulp.task('browser-sync', function() {
     browserSync({
-        files: "dist/styles/css/*.css"
-    },{
         server: {
-            baseDir: "./dist"
+            baseDir: 'dist'
         }
     });
 });
 
 gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'styles', 'scripts']);
 
-gulp.task('watch', function () {
+gulp.task('watch', ['browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
-    gulp.watch(options.paths.watch.scripts, ['scripts']);
+    gulp.watch(options.paths.watch.scripts, ['scripts', browserSync.reload]);
     gulp.watch(options.paths.watch.main, ['copy:main']);
     gulp.watch(options.paths.watch.images, ['copy:images']);
     gulp.watch(options.paths.watch.fonts, ['copy:fonts']);

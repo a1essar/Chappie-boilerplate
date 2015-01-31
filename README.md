@@ -18,7 +18,7 @@ ___
     * ~~Requirejs~~
     * Development or production environment
     * ~~Watchers~~
-    * Live reload and edit
+    * ~~Live reload~~
     * Images optimization
     * Creating sprites
     * Creating and optimization web-fonts

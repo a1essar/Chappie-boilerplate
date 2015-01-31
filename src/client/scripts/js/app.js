@@ -37,7 +37,7 @@ define('app', [
         });
 
         domReady(function () {
-
+            console.log('domReady');
         });
     }
     
