@@ -21,6 +21,7 @@ var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpRimraf = require('gulp-rimraf');
 var gulpFilter = require('gulp-filter');
 var gulpTtf2woff = require('gulp-ttf2woff');
+var gulpGzip = require('gulp-gzip');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -58,6 +59,10 @@ options.paths = {
     'fontsConverts': {
         'src': 'src/client/fonts/*.ttf',
         'dest': 'src/client/fonts'
+    },
+    'gzip': {
+        'styles': ['dist/styles/css/*.css', 'dist/styles/css/*.map'],
+        'scripts': ['dist/scripts/js/*.js', 'dist/scripts/js/*.map']
     },
     'dest': {
         'main': 'dist',
@@ -285,6 +290,20 @@ gulp.task('ttf2woff', function(){
         .pipe(gulpTtf2woff())
         .pipe(gulp.dest(options.paths.fontsConverts.dest));
 });
+
+gulp.task('gzip:styles', function(){
+    gulp.src(options.paths.gzip.styles)
+        .pipe(gulpGzip())
+        .pipe(gulp.dest(options.paths.dest.styles));
+});
+
+gulp.task('gzip:scripts', function(){
+    gulp.src(options.paths.gzip.scripts)
+        .pipe(gulpGzip())
+        .pipe(gulp.dest(options.paths.dest.scripts));
+});
+
+gulp.task('gzip', ['gzip:styles', 'gzip:scripts']);
 
 gulp.task('browser-sync', function() {
     browserSync({
