@@ -3,7 +3,6 @@ Chappie-boilerplate
 Work in progress
 
 ## Roadmap
-___
 
 ### v0.0.1
 
@@ -21,7 +20,7 @@ ___
     * ~~Live reload~~
     * Images optimization
     * Creating sprites
-    * Creating and optimization web-fonts
+    * ~~Creating web-fonts (ttftowoff)~~
 
 * JavaScript
     * ~~The modular structure of the application~~

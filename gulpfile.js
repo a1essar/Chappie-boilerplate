@@ -20,6 +20,7 @@ var gulpCsso = require('gulp-csso');
 var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpRimraf = require('gulp-rimraf');
 var gulpFilter = require('gulp-filter');
+var gulpTtf2woff = require('gulp-ttf2woff');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -54,6 +55,10 @@ options.paths = {
     'json': 'src/client/json/*',
     'svg': 'src/client/svg/*',
     'scriptsBase': 'src/client/scripts/js',
+    'fontsConverts': {
+        'src': 'src/client/fonts/*.ttf',
+        'dest': 'src/client/fonts'
+    },
     'dest': {
         'main': 'dist',
         'scripts': 'dist/scripts/js',
@@ -274,6 +279,12 @@ gulp.task('clean:svg', function(callback) {
 });
 
 gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg']);
+
+gulp.task('ttf2woff', function(){
+    gulp.src(options.paths.fontsConverts.src)
+        .pipe(gulpTtf2woff())
+        .pipe(gulp.dest(options.paths.fontsConverts.dest));
+});
 
 gulp.task('browser-sync', function() {
     browserSync({
