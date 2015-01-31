@@ -1,7 +1,68 @@
+
+
+.test-background-image{
+  width: 200px;
+  height: 200px;
+  background: url("src/client/images/1.jpg") no-repeat 0 0 transparent;
+  background-size: contain;
+}
+
+.test-background-gradient{
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(#000000, #ff0000);
+}
+
+.test-background-multi-image{
+  width: 200px;
+  height: 200px;
+  background: url("src/client/images/1.jpg") no-repeat 0 -100px, url("src/client/images/1.jpg") no-repeat 0 100px;
+  background-size: contain;
+}
+
 .test1{
   color: #ff1c00;
 }
 
 .test3{
   color: #f858ff;
+}
+
+.image-1{
+  width: 1024px;
+  height: 768px;
+
+  .webp &{
+    background-image: url('src/client/images/1.webp');
+  }
+
+  .no-webp &{
+    background-image: url('src/client/images/1.jpg');
+  }
+}
+
+.image-2{
+  width: 1024px;
+  height: 768px;
+
+  .webp &{
+    background-image: url('src/client/images/2.webp');
+  }
+
+  .no-webp &{
+    background-image: url('src/client/images/2.jpg');
+  }
+}
+
+.image-3{
+  width: 200px;
+  height: 150px;
+
+  .webp &{
+    background-image: url('src/client/images/3.webp');
+  }
+
+  .no-webp &{
+    background-image: url('src/client/images/3.png');
+  }
 }

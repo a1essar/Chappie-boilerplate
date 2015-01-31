@@ -18,8 +18,8 @@ Work in progress
     * Development or production environment
     * ~~Watchers~~
     * ~~Live reload~~
-    * Images optimization
-    * Creating sprites
+    * ~~Images optimization (gulp-image)~~
+    * ~~WebP~~
     * ~~Creating web-fonts (ttftowoff)~~
 
 * JavaScript
@@ -34,3 +34,8 @@ Work in progress
 
 * Templates
     * Base templates
+
+### v0.0.2
+
+* Build project
+    * Creating sprites
