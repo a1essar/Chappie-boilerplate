@@ -22,7 +22,6 @@
     "gulp-if": "^1.2.5",
     "gulp-image": "^0.5.3",
     "gulp-less": "^2.0.1",
-    "gulp-notify": "^2.2.0",
     "gulp-plumber": "^0.6.6",
     "gulp-rimraf": "^0.1.1",
     "gulp-size": "^1.2.0",
