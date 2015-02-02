@@ -28,6 +28,7 @@ Work in progress
     * Routing
     * Modals module
     * Form module (authorization, registration, search, feedback)
+    * Add unit test
 
 * Styles
     * Base styles
@@ -39,3 +40,8 @@ Work in progress
 
 * Build project
     * Creating sprites
+
+### In plans
+
+* Build project
+    * Create yeoman generator

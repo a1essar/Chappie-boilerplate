@@ -8,13 +8,7 @@ define('utils', [
     var utils = {};
     utils.callback = callback;
 
-    utils.shims = function(){
-        console.log('%ctrace: utils.shims', 'color: #ccc');
-
-        if (!window.location.origin) {
-            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-        }
-
+    utils.webpTest = function(){
         var a=new Image;
         a.onerror=function(){Modernizr.addTest("webp",!1)};
         a.onload=function(){Modernizr.addTest("webp",
@@ -24,9 +18,29 @@ define('utils', [
         a.src="data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAAAUAgCdASoBAAEAL/3+/3+CAB/AAAFzrNsAAP5QAAAAAA==";
     };
 
-    utils.query = function(selector, context){
-        var context = context || 'body';
-        return $(selector);
+    utils.locationOrigin = function(){
+        if (!window.location.origin) {
+            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+        }
+    };
+
+    utils.shims = function(){
+        console.log('%ctrace: utils.shims', 'color: #ccc');
+
+        this.locationOrigin();
+        this.webpTest();
+    };
+
+    utils.selector = function(selector, context){
+        /*return context && context.querySelectorAll(selector) || document.querySelectorAll(selector);*/
+
+        return $(selector, context) || $(selector);
+    };
+
+    utils.addEventListener = function(event, el, callback, context){
+        return $('body').off(event, el).on(event, el, function (e) {
+            callback(e);
+        });
     };
 
     utils.ajax = function(options){

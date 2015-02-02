@@ -28,29 +28,59 @@
     <script src="scripts/js/script.min.js" async="" defer=""></script>
 </head>
 <body>
-    <header class="">
-
+    <header class="container">
+        <h1><strong>Chappie boilerplate</strong> &mdash; шаблон для фронтенд разработки</h1>
     </header>
-    <nav class="">
-
-    </nav>
-    <main class="">
-        <h1>Main page 2</h1>
-        <h5><i class="fa fa-flag"></i>&nbsp; The Icons</h5>
-        <h5><span class="glyphicon glyphicon-user"></span></h5>
-        <div class="test1">test1</div>
-        <div class="test2">test2</div>
-        <div class="test-background-image"></div>
-        <div class="test-background-gradient"></div>
-        <div class="test-background-multi-image"></div>
-        <div class="image-1"></div>
-        <div class="image-2"></div>
-        <div class="image-3"></div>
-        <form action="">
-            <input type="text"/>
-            <br/>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
-        </form>
+    <main class="container">
+        <p>Требования: nodejs, bower</p>
+        <h2>Состав</h2>
+        <p>Сборка проекта с помощью gulp</p>
+        <ul>
+            <li>Оптимизация стилей</li>
+            <li>Autoprefixer</li>
+            <li>Less</li>
+            <li>Sourcemaps</li>
+            <li>Requirejs</li>
+            <li>Browsersync</li>
+            <li>Оптимизация изображений</li>
+            <li>Создание веб-шрифтов</li>
+        </ul>
+        <p>JavaScript</p>
+        <ul>
+            <li>Модульная архитектура на основе AMD</li>
+            <li>Базовое приложение (Маршрутизация, модальные окна, обработка форм)</li>
+            <li>Unit тесты</li>
+        </ul>
+        <p>Стили</p>
+        <ul>
+            <li>Базовые стили</li>
+            <li>Набор less примисей</li>
+            <li>normalize.css</li>
+        </ul>
     </main>
+
+    <div class="container">
+        <form action="/test">
+            <input name="firstname" type="text"/>
+            <br/>
+            <input name="lastname" type="text"/>
+            <br/>
+            <textarea name="message" cols="30" rows="10"></textarea>
+            <br/>
+            <input name="checkbox" type="checkbox"/>
+            <br/>
+            <input name="radio" value="1" type="radio"/>
+            <input name="radio" value="2" type="radio"/>
+            <input name="radio" value="3" type="radio"/>
+            <br>
+            <select name="select">
+                <option value="type 1">Type 1</option>
+                <option value="type 2">Type 2</option>
+                <option value="type 3">Type 2</option>
+            </select>
+            <br/>
+            <button class="js__ajax-form">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -7,8 +7,8 @@ define('app', [
     'detectizr',
     'text!../../json/config.json',
     'utils',
-    'modules/module-1'
-],  function ( domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Module1 ) {
+    'modules/form'
+],  function ( domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Form ) {
     'use strict';
 
     console.log('%cfile: app.js', 'color: #C2ECFF');
@@ -32,12 +32,12 @@ define('app', [
 
         utils.shims();
 
-        var module1 = new Module1({
-            'foo': 'bar'
-        });
+        var form = new Form();
 
         domReady(function () {
-            console.log('domReady');
+            console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');
+
+            form.domInitialize();
         });
     }
     
