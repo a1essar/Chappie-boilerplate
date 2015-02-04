@@ -24,7 +24,7 @@ Work in progress
 
 * JavaScript
     * ~~The modular structure of the application~~
-    * Core and utils (ajax, callbacks, dom manipulation, alerts)
+    * Core and utils (ajax, callbacks, alerts)
     * Routing
     * Modals module
     * Form module (authorization, registration, search, feedback)

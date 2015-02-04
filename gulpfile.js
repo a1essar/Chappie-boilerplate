@@ -50,6 +50,7 @@ options.paths = {
         '!src/client/styles',
         '!src/client/scripts',
     ],
+    'server': 'src/server/*',
     'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
     'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     'images': 'src/client/images/*',
@@ -71,6 +72,7 @@ options.paths = {
     },
     'dest': {
         'main': 'dist',
+        'server': 'dist/server',
         'scripts': 'dist/scripts/js',
         'scriptFileName': 'script.min.js',
         'styles': 'dist/styles/css',
@@ -90,6 +92,7 @@ options.paths = {
             '!dist/styles',
             '!dist/scripts',
         ],
+        'server': 'dist/server',
         'images': 'dist/images',
         'fonts': 'dist/fonts',
         'svg': 'dist/svg',
@@ -247,8 +250,19 @@ gulp.task('copy:main', ['clean:main'], function (callback) {
         ;
 });
 
+gulp.task('copy:server', ['clean:server'], function (callback) {
+    return gulp.src(options.paths.server)
+        .pipe(gulp.dest(options.paths.dest.server))
+        ;
+});
+
 gulp.task('clean:main', function(callback) {
     return gulp.src(options.paths.clean.main, { read: false })
+        .pipe(gulpRimraf());
+});
+
+gulp.task('clean:server', function(callback) {
+    return gulp.src(options.paths.clean.server, { read: false })
         .pipe(gulpRimraf());
 });
 

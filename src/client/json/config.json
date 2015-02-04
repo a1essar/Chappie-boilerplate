@@ -2,11 +2,11 @@
     "language": "ru",
     "social-api": {
         "vkontakte": {
-            "app-id": 4624074,
+            "app-id": 123,
             "scope": "email, wall"
         },
         "facebook": {
-            "app-id": 7.782386755657e+14,
+            "app-id": 123,
             "scope": "email, user_likes"
         }
     },
