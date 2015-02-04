@@ -50,7 +50,7 @@ options.paths = {
         '!src/client/styles',
         '!src/client/scripts',
     ],
-    'server': 'src/server/*',
+    'server': 'src/server/**',
     'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
     'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     'images': 'src/client/images/*',
@@ -110,6 +110,7 @@ options.paths = {
             '!src/client/styles',
             '!src/client/scripts',
         ],
+        'server': 'src/server/**',
         'images': 'src/client/images/*',
         'fonts': 'src/client/fonts/*',
         'svg': 'src/client/svg/*',
@@ -346,10 +347,15 @@ gulp.task('watch', ['browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
     gulp.watch(options.paths.watch.scripts, ['scripts', browserSync.reload]);
     gulp.watch(options.paths.watch.main, ['copy:main']);
+    gulp.watch(options.paths.watch.server, ['copy:server']);
     gulp.watch(options.paths.watch.images, ['copy:images']);
     gulp.watch(options.paths.watch.fonts, ['copy:fonts']);
     gulp.watch(options.paths.watch.json, ['copy:json']);
     gulp.watch(options.paths.watch.svg, ['copy:svg']);
+});
+
+gulp.task('watch:server', ['copy:server'], function () {
+    gulp.watch(options.paths.watch.server, ['copy:server']);
 });
 
 gulp.task('default', ['copy']);
