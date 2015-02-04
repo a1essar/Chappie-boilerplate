@@ -36,8 +36,6 @@ define('app', [
 
         domReady(function () {
             console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');
-
-            form.domInitialize();
         });
     }
     

@@ -31,18 +31,6 @@ define('utils', [
         this.webpTest();
     };
 
-    utils.selector = function(selector, context){
-        /*return context && context.querySelectorAll(selector) || document.querySelectorAll(selector);*/
-
-        return $(selector, context) || $(selector);
-    };
-
-    utils.addEventListener = function(event, el, callback, context){
-        return $('body').off(event, el).on(event, el, function (e) {
-            callback(e);
-        });
-    };
-
     utils.ajax = function(options){
         console.log('%ctrace: utils.ajax', 'color: #ccc');
 

@@ -1,45 +1,58 @@
 define('modules/form', [
+    'domReady',
     'utils',
     'spin'
-],  function (utils, Spinner) {
+],  function (domReady, utils, Spinner) {
     'use strict';
 
-    console.log('%cfile: module-1.js', 'color: #C2ECFF');
+    console.log('%cfile: form.js', 'color: #C2ECFF');
 
     /** private */
     var _this,
         el = '.js__ajax-form',
         _defaults = {
             'spinner': {
-                lines: 13, // The number of lines to draw
-                length: 6, // The length of each line
-                width: 2, // The line thickness
-                radius: 3, // The radius of the inner circle
-                corners: 1, // Corner roundness (0..1)
-                rotate: 0, // The rotation offset
-                direction: 1, // 1: clockwise, -1: counterclockwise
-                color: '#000', // #rgb or #rrggbb or array of colors
-                speed: 2, // Rounds per second
-                trail: 60, // Afterglow percentage
-                shadow: false, // Whether to render a shadow
-                hwaccel: true, // Whether to use hardware acceleration
-                className: 'spinner', // The CSS class to assign to the spinner
-                zIndex: 100500, // The z-index (defaults to 2000000000)
-                top: '50%', // Top position relative to parent
-                left: '50%' // Left position relative to parent
+                lines: 13,
+                length: 6,
+                width: 2,
+                radius: 3,
+                corners: 1,
+                rotate: 0,
+                direction: 1,
+                color: '#000',
+                speed: 2,
+                trail: 60,
+                shadow: false,
+                hwaccel: true,
+                className: 'spinner',
+                zIndex: 100500,
+                top: '50%',
+                left: '50%'
             }
         };
 
     /** constructor */
     function Module(){
-        console.log('%ctrace: Module-1 -> constructor', 'color: #ccc');
+        console.log('%ctrace: Form -> constructor', 'color: #ccc');
 
         /** public */
         _this = this;
+
+        domReady(function () {
+            console.log('%ctrace: Form -> constructor -> domReady', 'color: #ccc');
+
+            $('body').off('click', el).on('click', el, function(e){
+                e.preventDefault();
+
+                submit(e);
+            });
+        });
     }
 
     function submit(e){
-        var $el = utils.selector(e.currentTarget),
+        console.log('%ctrace: Form -> submit', 'color: #ccc');
+
+        var $el = $(e.currentTarget),
         $form = $el.parents('form'),
         action = $el.attr('data-action') || $form.attr('action'),
         data = $form.serialize(),
@@ -69,12 +82,8 @@ define('modules/form', [
     }
 
     var moduleApi = function moduleApi(){
-        this.domInitialize = function(){
-            utils.addEventListener('click', el, function(e){
-                e.preventDefault();
+        this.method = function(){
 
-                submit(e);
-            });
         };
     };
 
