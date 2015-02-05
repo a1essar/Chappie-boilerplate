@@ -148,6 +148,8 @@ gulp.task('scripts', ['clean:scripts'], function(callback) {
         modules[name] = path.relative(baseUrl, el);
     });
 
+    console.log(modules);
+
     rjs.optimize({
         baseUrl: baseUrl,
         paths: modules,

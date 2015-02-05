@@ -1,16 +1,13 @@
 define(['chai', 'app'], function(chai, App) {
-    var app = new App();
+    var MyApp;
 
-    describe('Testing "Main"', function(done){
-        beforeEach(function(done){
-            done();
+    describe('Testing "app.js"', function(done){
+        before(function(){
+            MyApp = new App();
         });
 
-        // start 1st suite
-        describe('#1 Main Suite:', function(){
-            it('App.test', function(){
-                chai.expect(app.test()).to.equal(true);
-            });
+        it('App initialization class', function(){
+            chai.expect(MyApp).to.be.an.instanceof(App);
         });
     });
 });

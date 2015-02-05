@@ -17,7 +17,9 @@ define('app', [
     var _this;
     var _defaults = JSON.parse(config);
 
-    /** constructor */
+    /** constructor
+     * @return {boolean}
+     */
     function App(){
         console.log('%ctrace: App -> constructor', 'color: #ccc');
 
@@ -39,13 +41,5 @@ define('app', [
         });
     }
 
-    var moduleApi = function moduleApi(){
-        this.test = function(){
-            return true;
-        };
-    };
-
-    App.prototype = new moduleApi();
-    
     return App;
 });

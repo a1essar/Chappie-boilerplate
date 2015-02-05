@@ -28,7 +28,7 @@ Work in progress
     * Routing
     * Modals module
     * Form module (authorization, registration, search, feedback)
-    * Add unit test
+    * Unit test
 
 * Styles
     * Base styles
