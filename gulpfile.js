@@ -23,6 +23,7 @@ var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpGzip = require('gulp-gzip');
 var gulpImage = require('gulp-image');
 var gulpWebp = require('gulp-webp');
+var gulpExec = require('gulp-exec');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
 
@@ -117,7 +118,8 @@ options.paths = {
         'json': 'src/client/json/*',
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
-    }
+    },
+    'test': 'src/client/scripts/js/test/runner.html'
 };
 
 gulp.task('scripts', ['clean:scripts'], function(callback) {
@@ -332,6 +334,25 @@ gulp.task('gzip:scripts', function(){
 });
 
 gulp.task('gzip', ['gzip:styles', 'gzip:scripts']);
+
+gulp.task('test', function() {
+    var execOptions = {
+        continueOnError: false, // default = false, true means don't emit error event
+        pipeStdout: true, // default = false, true means stdout is written to file.contents
+        customTemplatingThing: "" // content passed to gutil.template()
+    };
+
+    var reportOptions = {
+        err: true, // default = true, false means don't write err
+        stderr: true, // default = true, false means don't write stderr
+        stdout: true // default = true, false means don't write stdout
+    };
+
+    return gulp.src(options.paths.test)
+        .pipe(gulpPlumber())
+        .pipe(gulpExec('node ./node_modules/mocha-phantomjs/bin/mocha-phantomjs ' + options.paths.test, execOptions))
+        .pipe(gulpExec.reporter(reportOptions));
+});
 
 gulp.task('browser-sync', function() {
     browserSync({

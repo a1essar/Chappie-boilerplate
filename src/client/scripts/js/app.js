@@ -38,6 +38,14 @@ define('app', [
             console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');
         });
     }
+
+    var moduleApi = function moduleApi(){
+        this.test = function(){
+            return true;
+        };
+    };
+
+    App.prototype = new moduleApi();
     
     return App;
 });
