@@ -1,5 +1,6 @@
 /**
- *
+ * todo: delete and copy only the changed files;
+ * todo: css sprites;
  */
 
 'use strict';
