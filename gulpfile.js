@@ -1,6 +1,8 @@
 /**
  * todo: delete and copy only the changed files;
  * todo: css sprites;
+ * todo: preprocessor for HTML;
+ * todo: gulp-rimraf@0.1.1: Use npmjs.org/del instead, see https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md;
  */
 
 'use strict';
@@ -59,6 +61,7 @@ options.paths = {
     'fonts': 'src/client/fonts/*',
     'json': 'src/client/json/*',
     'svg': 'src/client/svg/*',
+    'templates': 'src/client/templates/*',
     'scriptsBase': 'src/client/scripts/js',
     'fontsConverts': {
         'src': 'src/client/fonts/*.ttf',
@@ -83,6 +86,7 @@ options.paths = {
         'images': 'dist/images',
         'json': 'dist/json',
         'svg': 'dist/svg',
+        'templates': 'dist/templates',
     },
     'clean': {
         'main': [
@@ -93,6 +97,7 @@ options.paths = {
             '!dist/json',
             '!dist/styles',
             '!dist/scripts',
+            '!dist/templates',
         ],
         'server': 'dist/server',
         'images': 'dist/images',
@@ -101,6 +106,7 @@ options.paths = {
         'json': 'dist/json',
         'styles': 'dist/styles',
         'scripts': 'dist/scripts',
+        'templates': 'dist/templates',
     },
     'watch': {
         'main': [
@@ -111,6 +117,7 @@ options.paths = {
             '!src/client/json',
             '!src/client/styles',
             '!src/client/scripts',
+            '!src/client/templates',
         ],
         'server': 'src/server/**',
         'images': 'src/client/images/*',
@@ -119,6 +126,7 @@ options.paths = {
         'json': 'src/client/json/*',
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
+        'templates': 'src/client/templates/*',
     },
     'test': 'src/client/scripts/js/test/runner.html'
 };
@@ -260,8 +268,17 @@ gulp.task('copy:server', ['clean:server'], function (callback) {
         ;
 });
 
+gulp.task('copy:templates', ['clean:templates'], function (callback) {
+    return gulp.src(options.paths.templates).pipe(gulp.dest(options.paths.dest.templates));
+});
+
 gulp.task('clean:main', function(callback) {
     return gulp.src(options.paths.clean.main, { read: false })
+        .pipe(gulpRimraf());
+});
+
+gulp.task('clean:templates', function(callback) {
+    return gulp.src(options.paths.clean.templates, { read: false })
         .pipe(gulpRimraf());
 });
 
@@ -300,7 +317,7 @@ gulp.task('clean:svg', function(callback) {
         .pipe(gulpRimraf());
 });
 
-gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg']);
+gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg', 'copy:templates']);
 
 gulp.task('ttf2woff', function(){
     gulp.src(options.paths.fontsConverts.src)
@@ -368,12 +385,13 @@ gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'styles', 'scripts']);
 gulp.task('watch', ['browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
     gulp.watch(options.paths.watch.scripts, ['scripts', browserSync.reload]);
-    gulp.watch(options.paths.watch.main, ['copy:main']);
-    gulp.watch(options.paths.watch.server, ['copy:server']);
-    gulp.watch(options.paths.watch.images, ['copy:images']);
-    gulp.watch(options.paths.watch.fonts, ['copy:fonts']);
-    gulp.watch(options.paths.watch.json, ['copy:json']);
-    gulp.watch(options.paths.watch.svg, ['copy:svg']);
+    gulp.watch(options.paths.watch.main, ['copy:main', browserSync.reload]);
+    gulp.watch(options.paths.watch.server, ['copy:server', browserSync.reload]);
+    gulp.watch(options.paths.watch.images, ['copy:images', browserSync.reload]);
+    gulp.watch(options.paths.watch.fonts, ['copy:fonts', browserSync.reload]);
+    gulp.watch(options.paths.watch.json, ['copy:json', browserSync.reload]);
+    gulp.watch(options.paths.watch.svg, ['copy:svg', browserSync.reload]);
+    gulp.watch(options.paths.watch.templates, ['copy:templates', browserSync.reload]);
 });
 
 gulp.task('watch:server', ['copy:server'], function () {
