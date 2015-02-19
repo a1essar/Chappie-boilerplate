@@ -380,7 +380,7 @@ gulp.task('browser-sync', function() {
 
 gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'styles', 'scripts']);
 
-gulp.task('watch', ['browser-sync'], function () {
+gulp.task('watch', ['go', 'browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
     gulp.watch(options.paths.watch.scripts, ['scripts', browserSync.reload]);
     gulp.watch(options.paths.watch.main, ['copy:main', browserSync.reload]);
