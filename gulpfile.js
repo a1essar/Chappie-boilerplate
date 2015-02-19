@@ -2,7 +2,6 @@
  * todo: delete and copy only the changed files;
  * todo: css sprites;
  * todo: preprocessor for HTML;
- * todo: gulp-rimraf@0.1.1: Use npmjs.org/del instead, see https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md;
  */
 
 'use strict';
@@ -14,13 +13,14 @@ var rjs = require('requirejs');
 var autoprefixer = require('autoprefixer-core');
 var less = require('less');
 var browserSync = require('browser-sync');
+var vinylPaths = require('vinyl-paths');
+var del = require('del');
 var gulp = require('gulp');
 var gulpIf = require('gulp-if');
 var gulpConcat = require('gulp-concat');
 var gulpPlumber = require('gulp-plumber');
 var gulpCsso = require('gulp-csso');
 var gulpSourcemaps = require('gulp-sourcemaps');
-var gulpRimraf = require('gulp-rimraf');
 var gulpFilter = require('gulp-filter');
 var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpGzip = require('gulp-gzip');
@@ -46,22 +46,22 @@ var options = {
 
 options.paths = {
     'main': [
-        'src/client/*',
-        '!src/client/images',
-        '!src/client/fonts',
-        '!src/client/svg',
-        '!src/client/json',
-        '!src/client/styles',
-        '!src/client/scripts',
+        'src/client/favicon.ico',
+        'src/client/humans.txt',
+        'src/client/index.html',
+        'src/client/.htaccess',
+        'src/client/index.php',
+        'src/client/manifest.webapp',
+        'src/client/robots.txt'
     ],
-    'server': 'src/server/**',
-    'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
-    'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
+    'server': 'src/server/*',
     'images': 'src/client/images/*',
     'fonts': 'src/client/fonts/*',
     'json': 'src/client/json/*',
     'svg': 'src/client/svg/*',
     'templates': 'src/client/templates/*',
+    'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
+    'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     'scriptsBase': 'src/client/scripts/js',
     'fontsConverts': {
         'src': 'src/client/fonts/*.ttf',
@@ -69,7 +69,7 @@ options.paths = {
     },
     'optimizeImages': {
         'src': 'src/client/images/*',
-        'dest': 'src/client/images',
+        'dest': 'src/client/images'
     },
     'gzip': {
         'styles': ['dist/styles/css/*.css', 'dist/styles/css/*.map'],
@@ -86,18 +86,17 @@ options.paths = {
         'images': 'dist/images',
         'json': 'dist/json',
         'svg': 'dist/svg',
-        'templates': 'dist/templates',
+        'templates': 'dist/templates'
     },
     'clean': {
         'main': [
-            'dist/*',
-            '!dist/images',
-            '!dist/fonts',
-            '!dist/svg',
-            '!dist/json',
-            '!dist/styles',
-            '!dist/scripts',
-            '!dist/templates',
+            'dist/favicon.ico',
+            'dist/humans.txt',
+            'dist/index.html',
+            'dist/index.php',
+            'dist/.htaccess',
+            'dist/manifest.webapp',
+            'dist/robots.txt'
         ],
         'server': 'dist/server',
         'images': 'dist/images',
@@ -106,27 +105,26 @@ options.paths = {
         'json': 'dist/json',
         'styles': 'dist/styles',
         'scripts': 'dist/scripts',
-        'templates': 'dist/templates',
+        'templates': 'dist/templates'
     },
     'watch': {
         'main': [
-            'src/client/*',
-            '!src/client/images',
-            '!src/client/fonts',
-            '!src/client/svg',
-            '!src/client/json',
-            '!src/client/styles',
-            '!src/client/scripts',
-            '!src/client/templates',
+            'src/client/favicon.ico',
+            'src/client/humans.txt',
+            'src/client/index.html',
+            'src/client/.htaccess',
+            'src/client/index.php',
+            'src/client/manifest.webapp',
+            'src/client/robots.txt'
         ],
-        'server': 'src/server/**',
+        'server': 'src/server/*',
         'images': 'src/client/images/*',
         'fonts': 'src/client/fonts/*',
         'svg': 'src/client/svg/*',
         'json': 'src/client/json/*',
-        'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
-        'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
         'templates': 'src/client/templates/*',
+        'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
+        'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']
     },
     'test': 'src/client/scripts/js/test/runner.html'
 };
@@ -274,47 +272,47 @@ gulp.task('copy:templates', ['clean:templates'], function (callback) {
 
 gulp.task('clean:main', function(callback) {
     return gulp.src(options.paths.clean.main, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:templates', function(callback) {
     return gulp.src(options.paths.clean.templates, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:server', function(callback) {
     return gulp.src(options.paths.clean.server, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:scripts', function(callback) {
     return gulp.src(options.paths.clean.scripts, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:styles', function(callback) {
     return gulp.src(options.paths.clean.styles, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:fonts', function(callback) {
     return gulp.src(options.paths.clean.fonts, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:images', function(callback) {
     return gulp.src(options.paths.clean.images, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:json', function(callback) {
     return gulp.src(options.paths.clean.json, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean:svg', function(callback) {
     return gulp.src(options.paths.clean.svg, { read: false })
-        .pipe(gulpRimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg', 'copy:templates']);
