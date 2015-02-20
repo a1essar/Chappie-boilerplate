@@ -29,6 +29,15 @@
     "vendor-prefix-align": true,
     "sort-order": [
         [
+          "$import"
+        ],
+        [
+          "$variable"
+        ],
+        [
+          "$include"
+        ],
+        [
             "font",
             "font-family",
             "font-size",
