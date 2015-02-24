@@ -29,6 +29,7 @@ var gulpWebp = require('gulp-webp');
 var gulpExec = require('gulp-exec');
 var mainBowerFiles = require('main-bower-files');
 var lazypipe = require('lazypipe');
+var runSequence = require('run-sequence');
 
 var options = {
     'autoprefixerOptions': [
@@ -349,8 +350,6 @@ gulp.task('clean:svg', function(callback) {
         .pipe(vinylPaths(del));
 });
 
-gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg', 'copy:templates']);
-
 gulp.task('ttf2woff', function(){
     gulp.src(options.paths.fontsConverts.src)
         .pipe(gulpTtf2woff())
@@ -412,7 +411,14 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'bower:json', 'styles', 'scripts']);
+gulp.task('bower', ['bower:images', 'bower:fonts', 'bower:json']);
+gulp.task('copy', ['copy:main', 'copy:images', 'copy:fonts', 'copy:json', 'copy:svg', 'copy:templates']);
+
+gulp.task('go', function(callback) {
+    runSequence('copy',
+        ['styles', 'scripts'],
+        callback);
+});
 
 gulp.task('watch', ['go', 'browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
