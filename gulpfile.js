@@ -228,7 +228,7 @@ gulp.task('bower:fonts', ['clean:fonts'], function() {
             bowerrc: '.bowerrc',
             bowerJson: 'bower.json'
         },
-        filter: /.eot|.svg|.ttf|.woff|.woff2/
+        filter: /.eot|.ttf|.woff|.woff2/
     });
 
     return gulp.src(vendors)
@@ -237,19 +237,53 @@ gulp.task('bower:fonts', ['clean:fonts'], function() {
         ;
 });
 
+gulp.task('bower:json', ['clean:json'], function() {
+    var vendors = mainBowerFiles({
+        paths: {
+            paths: './',
+            bowerDirectory: 'vendor',
+            bowerrc: '.bowerrc',
+            bowerJson: 'bower.json'
+        },
+        filter: /.json/
+    });
+
+    return gulp.src(vendors)
+        .pipe(gulpPlumber())
+        .pipe(gulp.dest(options.paths.dest.json))
+        ;
+});
+
+gulp.task('bower:svg', ['clean:svg'], function() {
+    var vendors = mainBowerFiles({
+        paths: {
+            paths: './',
+            bowerDirectory: 'vendor',
+            bowerrc: '.bowerrc',
+            bowerJson: 'bower.json'
+        },
+        filter: /.svg/
+    });
+
+    return gulp.src(vendors)
+        .pipe(gulpPlumber())
+        .pipe(gulp.dest(options.paths.dest.svg))
+        ;
+});
+
 gulp.task('copy:fonts', ['bower:fonts'], function (callback) {
     return gulp.src(options.paths.fonts).pipe(gulp.dest(options.paths.dest.fonts));
 });
 
-gulp.task('copy:images', ['clean:images'], function (callback) {
+gulp.task('copy:images', ['bower:images'], function (callback) {
     return gulp.src(options.paths.images).pipe(gulp.dest(options.paths.dest.images));
 });
 
-gulp.task('copy:svg', ['clean:svg'], function (callback) {
+gulp.task('copy:svg', ['bower:svg'], function (callback) {
     return gulp.src(options.paths.svg).pipe(gulp.dest(options.paths.dest.svg));
 });
 
-gulp.task('copy:json', ['clean:json'], function (callback) {
+gulp.task('copy:json', ['bower:json'], function (callback) {
     return gulp.src(options.paths.json).pipe(gulp.dest(options.paths.dest.json));
 });
 
@@ -378,7 +412,7 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'styles', 'scripts']);
+gulp.task('go', ['copy', 'bower:images', 'bower:fonts', 'bower:json', 'styles', 'scripts']);
 
 gulp.task('watch', ['go', 'browser-sync'], function () {
     gulp.watch(options.paths.watch.styles, ['styles']);
