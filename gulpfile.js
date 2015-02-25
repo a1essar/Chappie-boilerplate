@@ -118,12 +118,12 @@ options.paths = {
             'src/client/manifest.webapp',
             'src/client/robots.txt'
         ],
-        'server': 'src/server/*',
-        'images': 'src/client/images/*',
-        'fonts': 'src/client/fonts/*',
-        'svg': 'src/client/svg/*',
-        'json': 'src/client/json/*',
-        'templates': 'src/client/templates/*',
+        'server': 'src/server/**',
+        'images': 'src/client/images/**',
+        'fonts': 'src/client/fonts/**',
+        'svg': 'src/client/svg/**',
+        'json': 'src/client/json/**',
+        'templates': 'src/client/templates/**',
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']
     },
