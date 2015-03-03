@@ -545,6 +545,8 @@ function urlRebase() {
             if(filename.indexOf('jpg') >= 0 || filename.indexOf('png') >= 0 || filename.indexOf('gif') >= 0 || filename.indexOf('jpeg') >= 0 || filename.indexOf('webp') >= 0){
                 return "url(\"../../images/" + filename + "\")";
             }
+
+            return match;
         });
 
         file.contents = new Buffer(content);
