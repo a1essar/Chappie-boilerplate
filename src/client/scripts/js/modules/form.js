@@ -71,6 +71,13 @@ define('modules/form', [
                 spinner.stop();
                 $el.css('position', '').css('width', '').css('height', '').html(caption);
                 $el.removeAttr('disabled', 'disabled');
+
+                if(!data.hasOwnProperty('parameters')){
+                    data.parameters = {};
+                }
+
+                data.parameters.$form = $form;
+
                 utils.callback.done(data);
             },
             failCallback: function(data){
