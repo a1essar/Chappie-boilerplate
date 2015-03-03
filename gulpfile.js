@@ -538,7 +538,7 @@ function urlRebase() {
             var file = cleanMatch(file);
             var filename = path.basename(file).toLowerCase();
 
-            if(filename.indexOf('eot') >= 0 || filename.indexOf('woff') >= 0 || filename.indexOf('ttf') >= 0 || && file.indexOf('font') >= 0){
+            if(filename.indexOf('eot') >= 0 || filename.indexOf('woff') >= 0 || filename.indexOf('ttf') >= 0 || filename.indexOf('svg') >= 0 && file.indexOf('font') >= 0){
                 return "url(\"../../fonts/" + filename + "\")";
             }
 
