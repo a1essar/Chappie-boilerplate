@@ -4,7 +4,7 @@ Work in progress
 
 ## Roadmap
 
-### v0.0.1
+### v1.0.0
 
 * Build project
     * ~~Use npm packages~~
@@ -35,8 +35,9 @@ Work in progress
 
 * Templates
     * Base templates
+    * ~~Mustache~~
 
-### v0.0.2
+### v1.0.1
 
 * Build project
     * Creating sprites
