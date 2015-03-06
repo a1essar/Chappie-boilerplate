@@ -15,6 +15,7 @@ Work in progress
     * ~~Styles autoprefixer~~
     * ~~Less~~
     * ~~Requirejs~~
+    * ~~Mustache templates~~
     * Development or production environment
     * ~~Watchers~~
     * ~~Live reload~~
@@ -35,7 +36,6 @@ Work in progress
 
 * Templates
     * Base templates
-    * ~~Mustache~~
 
 ### v1.0.1
 
