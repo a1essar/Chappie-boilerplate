@@ -148,7 +148,7 @@ options.paths = {
         'mustache': [
             'src/client/templates/mustache/*.mustache',
             'src/client/templates/mustache/**/*.mustache',
-            'src/client/json/**'
+            'src/client/scripts/js/views/**'
         ],
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']
@@ -541,7 +541,7 @@ function mustacheRender(options) {
         data.forEach(function(el, i){
             var ext = path.extname(data[i].path);
             var name = path.basename(data[i].path).replace(ext, '');
-            var viewPath = 'src/client/json/' + name + '.json';
+            var viewPath = 'src/client/scripts/js/views/' + name + '.js';
 
             if(path.dirname(data[i].path).indexOf('partials') >= 0){
                 partials[name] = data[i].contents.toString('utf8');
@@ -554,7 +554,7 @@ function mustacheRender(options) {
             fs.readFile(viewPath, function(err, d){
                 if(d){
                     try{
-                        d = JSON.parse(d.toString('utf8'));
+                        d = eval(d.toString('utf8'));
                     }
                     catch(e){
 
@@ -578,10 +578,10 @@ function mustacheRender(options) {
         partials = _.extend(partials, options.partials);
 
         /* Load base view and add to all views */
-        fs.readFile('src/client/json/data.json', function(err, d){
+        fs.readFile('src/client/scripts/js/views/data.js', function(err, d){
             Object.keys(templates).forEach(function(key, i){
                 mustache.parse(templates[key]);
-                var view =  _.extend(views[key], JSON.parse(d.toString('utf8')));
+                var view =  _.extend(views[key], eval(d.toString('utf8')));
                 var content = mustache.render(templates[key], view, partials);
 
                 data[i].contents = new Buffer(content);
