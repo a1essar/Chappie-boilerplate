@@ -1,6 +1,5 @@
 /**
  * todo: css sprites;
- * todo: template engines (mustache.js, hogan.js);
  * todo: replace jquery of bean, qwery, bonzo, reqwest
  */
 
@@ -11,9 +10,11 @@ var autoprefixer = require('autoprefixer-core');
 var browserSync = require('browser-sync');
 var del = require('del');
 var es = require('event-stream');
+var fs = require('fs');
 var lazypipe = require('lazypipe');
 var less = require('less');
 var mainBowerFiles = require('main-bower-files');
+var mustache = require('mustache');
 var path = require('path');
 var rjs = require('requirejs');
 var runSequence = require('run-sequence');
@@ -31,6 +32,7 @@ var gulpPlumber = require('gulp-plumber');
 var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpWebp = require('gulp-webp');
+var gulpUtil = require('gulp-util');
 
 var options = {
     'autoprefixerOptions': [
@@ -67,7 +69,13 @@ options.paths = {
     'fonts': 'src/client/fonts/**',
     'json': 'src/client/json/**',
     'svg': 'src/client/svg/**',
-    'templates': 'src/client/templates/**',
+    'templates': [
+        'src/client/templates/**'
+    ],
+    'mustache': [
+        'src/client/templates/mustache/*.mustache',
+        'src/client/templates/mustache/**/*.mustache'
+    ],
     'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
     'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js'],
     'scriptsBase': 'src/client/scripts/js',
@@ -90,7 +98,8 @@ options.paths = {
         'images': 'dist/images',
         'json': 'dist/json',
         'svg': 'dist/svg',
-        'templates': 'dist/templates'
+        'templates': 'dist/templates',
+        'mustache': 'dist/templates'
     },
     'clean': {
         'root': 'dist',
@@ -133,7 +142,14 @@ options.paths = {
         'fonts': 'src/client/fonts/**',
         'svg': 'src/client/svg/**',
         'json': 'src/client/json/**',
-        'templates': 'src/client/templates/**',
+        'templates': [
+            'src/client/templates/**'
+        ],
+        'mustache': [
+            'src/client/templates/mustache/*.mustache',
+            'src/client/templates/mustache/**/*.mustache',
+            'src/client/json/**'
+        ],
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']
     },
@@ -227,7 +243,7 @@ gulp.task('bower:assets', function() {
         }
     });
 
-    var ImagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);
+    var imagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);
     var fontsFilter = gulpFilter(['*.eot', '*.ttf', '*.woff', '*.woff2']);
     var jsonFilter = gulpFilter(['*.json']);
     var svgFilter = gulpFilter(['*.svg']);
@@ -235,10 +251,10 @@ gulp.task('bower:assets', function() {
     return gulp.src(vendors)
         .pipe(gulpPlumber())
 
-        .pipe(ImagesFilter)
+        .pipe(imagesFilter)
         .pipe(gulpChanged(options.paths.dest.images))
         .pipe(gulp.dest(options.paths.dest.images))
-        .pipe(ImagesFilter.restore())
+        .pipe(imagesFilter.restore())
 
         .pipe(fontsFilter)
         .pipe(gulpChanged(options.paths.dest.svg))
@@ -260,7 +276,7 @@ gulp.task('bower:assets', function() {
 
 /* start copy:assets */
 gulp.task('copy:assets', ['bower:assets'], function (callback) {
-    var ImagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);
+    var imagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);
     var fontsFilter = gulpFilter(['*.eot', '*.ttf', '*.woff', '*.woff2']);
     var jsonFilter = gulpFilter(['*.json']);
     var svgFilter = gulpFilter(['*.svg']);
@@ -268,10 +284,10 @@ gulp.task('copy:assets', ['bower:assets'], function (callback) {
     return gulp.src(options.paths.assets)
         .pipe(gulpPlumber())
 
-        .pipe(ImagesFilter)
+        .pipe(imagesFilter)
         .pipe(gulpChanged(options.paths.dest.images))
         .pipe(gulp.dest(options.paths.dest.images))
-        .pipe(ImagesFilter.restore())
+        .pipe(imagesFilter.restore())
 
         .pipe(fontsFilter)
         .pipe(gulpChanged(options.paths.dest.svg))
@@ -317,31 +333,51 @@ gulp.task('copy:server', ['clean:server'], function (callback) {
 });
 /* end copy:server */
 
+/* start task: clean */
 gulp.task('clean', function (callback) {
     return gulp.src(options.paths.clean.root, { read: false })
         .pipe(vinylPaths(del));
 });
+/* end task: clean */
 
+/* start task: templates */
+gulp.task('templates', function(){
+    gulp.src(options.paths.mustache)
+        .pipe(gulpPlumber())
+
+        .pipe(gulpChanged(options.paths.dest.mustache))
+        .pipe(mustacheRender())
+        .pipe(gulp.dest(options.paths.dest.mustache));
+});
+/* end task: templates */
+
+/* start task: ttf2woff */
 gulp.task('ttf2woff', function(){
     gulp.src(options.paths.fontsConverts.src)
         .pipe(gulpTtf2woff())
         .pipe(gulp.dest(options.paths.fontsConverts.dest));
 });
+/* end task: ttf2woff */
 
+/* start task: images2webp */
 gulp.task('images2webp', function () {
     return gulp.src(options.paths.optimizeImages.src)
         .pipe(gulpWebp({quality: 60}))
         .pipe(gulp.dest(options.paths.optimizeImages.dest))
         ;
 });
+/* end task: images2webp */
 
+/* start task: optimize-images */
 gulp.task('optimize-images', function () {
     return gulp.src(options.paths.optimizeImages.src)
         .pipe(gulpImage())
         .pipe(gulp.dest(options.paths.optimizeImages.dest))
         ;
 });
+/* end task: optimize-images */
 
+/* start task: test */
 gulp.task('test', function() {
     var execOptions = {
         continueOnError: false, // default = false, true means don't emit error event
@@ -360,7 +396,9 @@ gulp.task('test', function() {
         .pipe(gulpExec('node ./node_modules/mocha-phantomjs/bin/mocha-phantomjs ' + options.paths.test, execOptions))
         .pipe(gulpExec.reporter(reportOptions));
 });
+/* end task: test */
 
+/* start task: browser-sync */
 gulp.task('browser-sync', function() {
     browserSync({
         notify: false,
@@ -369,6 +407,7 @@ gulp.task('browser-sync', function() {
         }
     });
 });
+/* start end: browser-sync */
 
 gulp.task('copy', function(callback) {
     runSequence('clean',
@@ -378,7 +417,7 @@ gulp.task('copy', function(callback) {
 
 gulp.task('go', function(callback) {
     runSequence('copy',
-        ['styles', 'scripts'],
+        ['styles', 'scripts', 'templates'],
         callback);
 });
 
@@ -388,6 +427,7 @@ gulp.task('watch', ['go', 'browser-sync'], function () {
     gulp.watch(options.paths.watch.main, ['copy:main', browserSync.reload]);
     gulp.watch(options.paths.watch.assets, ['copy:assets', browserSync.reload]);
     gulp.watch(options.paths.watch.templates, ['copy:templates', browserSync.reload]);
+    gulp.watch(options.paths.watch.mustache, ['templates', browserSync.reload]);
 });
 
 gulp.task('watch:server', ['copy:server'], function () {
@@ -396,6 +436,7 @@ gulp.task('watch:server', ['copy:server'], function () {
 
 gulp.task('default', ['go']);
 
+/* custom plagins */
 function lessRender() {
     var data = [];
     var content = new Buffer(0);
@@ -463,6 +504,101 @@ function lessRender() {
     return es.through(bufferContents, endStream);
 }
 
+function mustacheRender(options) {
+    var _this;
+    var data = [];
+    var templates = {};
+    var views = {};
+    var partials = {};
+
+    var options = _.extend({
+            extension: '.html',
+            partials: {}
+        }, options);
+
+    function bufferContents(file){
+        if (file.isNull()) {
+            return;
+        }
+
+        data.push(file);
+    }
+
+    function endStream(){
+        if (!data) {
+            return this.emit('end');
+        }
+
+        _this = this;
+
+        dataLoader();
+    }
+
+    function dataLoader(){
+        var dataLength = data.length;
+        var dataIndex = 0;
+
+        data.forEach(function(el, i){
+            var ext = path.extname(data[i].path);
+            var name = path.basename(data[i].path).replace(ext, '');
+            var viewPath = 'src/client/json/' + name + '.json';
+
+            if(path.dirname(data[i].path).indexOf('partials') >= 0){
+                partials[name] = data[i].contents.toString('utf8');
+            }else{
+                partials[name] = {};
+            }
+
+            templates[name] = data[i].contents.toString('utf8');
+
+            fs.readFile(viewPath, function(err, d){
+                if(d){
+                    try{
+                        d = JSON.parse(d.toString('utf8'));
+                    }
+                    catch(e){
+
+                    }
+                }else{
+                    d = {};
+                }
+
+                views[name] = d;
+
+                if(dataIndex == dataLength - 1){
+                    render();
+                }
+
+                dataIndex++;
+            });
+        });
+    }
+
+    function render(){
+        partials = _.extend(partials, options.partials);
+
+        /* Load base view and add to all views */
+        fs.readFile('src/client/json/data.json', function(err, d){
+            Object.keys(templates).forEach(function(key, i){
+                mustache.parse(templates[key]);
+                var view =  _.extend(views[key], JSON.parse(d.toString('utf8')));
+                var content = mustache.render(templates[key], view, partials);
+
+                data[i].contents = new Buffer(content);
+                data[i].path = gulpUtil.replaceExtension(data[i].path, options.extension);
+
+                _this.emit('data', data[i]);
+
+                if(i == data.length - 1){
+                    _this.emit('end');
+                }
+            });
+        });
+    }
+
+    return es.through(bufferContents, endStream);
+}
+
 function autoprefixerRender() {
     function render(file, callback) {
         var content = file.contents.toString('utf8');
@@ -517,7 +653,7 @@ function urlRebase() {
 
 function testPipe() {
     function render(file, callback) {
-        console.log(file.history);
+        console.log(file.path);
 
         callback(null, file);
     }
