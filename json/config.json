@@ -1,0 +1,14 @@
+{
+  "language": "ru",
+  "social-api": {
+    "vkontakte": {
+      "app-id": 123,
+      "scope": "email, wall"
+    },
+    "facebook": {
+      "app-id": 123,
+      "scope": "email, user_likes"
+    }
+  },
+  "debug": false
+}
