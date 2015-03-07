@@ -28,6 +28,7 @@ var gulpExec = require('gulp-exec');
 var gulpFilter = require('gulp-filter');
 var gulpIf = require('gulp-if');
 var gulpImage = require('gulp-image');
+var gulpGhPages = require('gulp-gh-pages');
 var gulpPlumber = require('gulp-plumber');
 var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpTtf2woff = require('gulp-ttf2woff');
@@ -407,7 +408,14 @@ gulp.task('browser-sync', function() {
         }
     });
 });
-/* start end: browser-sync */
+/* end: browser-sync */
+
+/* start: gh-pages */
+gulp.task('gh-pages', function () {
+    return gulp.src('./dist/**/*')
+        .pipe(gulpGhPages());
+});
+/* end: gh-pages */
 
 gulp.task('copy', function(callback) {
     runSequence('clean',
