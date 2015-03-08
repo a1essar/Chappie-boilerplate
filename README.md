@@ -1,4 +1,4 @@
-Chappie-boilerplate
+Happy Starter
 ===
 Work in progress
 
