@@ -150,7 +150,7 @@ options.paths = {
         'mustache': [
             'src/client/templates/mustache/*.mustache',
             'src/client/templates/mustache/**/*.mustache',
-            'src/client/scripts/js/views/**'
+            'src/client/scripts/js/views/**/*.js'
         ],
         'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
         'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']
