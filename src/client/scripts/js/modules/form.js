@@ -1,4 +1,4 @@
-define('modules/form', [
+define([
     'domReady',
     'utils',
     'spin'

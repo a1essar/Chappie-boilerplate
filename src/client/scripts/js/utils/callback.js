@@ -1,4 +1,4 @@
-define('utils/callback', [
+define([
 ],  function () {
     'use strict';
 

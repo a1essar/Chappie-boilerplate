@@ -1,4 +1,8 @@
-define('app', [
+/*
+* todo: remove define module names;
+* */
+
+define([
     'domReady',
     'jquery',
     'underscore',
