@@ -476,7 +476,7 @@ gulp.task('templates', function(){
         .pipe(gulpHtmlhint({
             'tagname-lowercase': true,
             'attr-lowercase': true,
-            'attr-value-double-quotes': true,
+            'attr-value-double-quotes': false,
             'attr-value-not-empty': true,
             'attr-no-duplication': true,
             'doctype-first': true,
