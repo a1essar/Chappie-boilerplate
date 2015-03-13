@@ -299,6 +299,7 @@ gulp.task('styles', function() {
             'unqualified-attributes': false,
             'vendor-prefix': false,
             'zero-units': true,
+            'bulletproof-font-face': false
         }))
         .pipe(gulpCsslint.reporter(customReporter))
 
