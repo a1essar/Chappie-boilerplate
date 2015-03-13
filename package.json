@@ -23,6 +23,8 @@
     "gulp-exec": "^2.1.1",
     "gulp-filter": "^2.0.0",
     "gulp-gh-pages": "^0.4.0",
+    "gulp-htmlhint": "0.0.9",
+    "gulp-htmlmin": "^1.1.1",
     "gulp-if": "^1.2.5",
     "gulp-image": "^0.5.3",
     "gulp-less": "^2.0.1",

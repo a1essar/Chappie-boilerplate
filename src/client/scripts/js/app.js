@@ -1,5 +1,5 @@
 /*
-* todo: remove define module names;
+*
 * */
 
 define([

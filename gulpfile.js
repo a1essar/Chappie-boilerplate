@@ -1,9 +1,13 @@
+
 /**
+ * todo: gulp-htmlmin+
+ * todo: gulp-htmlhint+
+ * todo: gulp-csslint, gulp-csscomb
+ * todo: gulp-jslint
+ * todo: css sprites (gulp-spritesmith)
  * todo: cssnext;
- * todo: css sprites;
  * todo: replace jquery of bean, qwery, bonzo, reqwest
  */
-
 'use strict';
 
 var _ = require('underscore');
@@ -27,6 +31,8 @@ var gulpConcat = require('gulp-concat');
 var gulpCsso = require('gulp-csso');
 var gulpExec = require('gulp-exec');
 var gulpFilter = require('gulp-filter');
+var gulpHtmlmin = require('gulp-htmlmin');
+var gulpHtmlhint = require("gulp-htmlhint");
 var gulpIf = require('gulp-if');
 var gulpImage = require('gulp-image');
 var gulpGhPages = require('gulp-gh-pages');
@@ -344,11 +350,61 @@ gulp.task('clean', function (callback) {
 
 /* start task: templates */
 gulp.task('templates', function(){
+
+    /* custom reporter function for gulpHtmlhint*/
+    var reporter = function reporter(file){
+        var c = gulpUtil.colors;
+
+        var errorCount = file.htmlhint.errorCount;
+        var plural = errorCount === 1 ? '' : 's';
+
+        process.stderr.write('\x07'); // Send a beep to the terminal so it bounces
+
+        gulpUtil.log(c.cyan(errorCount) + ' error' + plural + ' found in ' + c.magenta(file.path));
+
+        file.htmlhint.messages.forEach(function(result){
+            var message = result.error,
+                line = message.line,
+                col = message.col,
+                detail = typeof message.line !== 'undefined' ?
+                c.yellow('L' + line) + c.red(':') + c.yellow('C' + col) : c.yellow('GENERAL');
+
+            gulpUtil.log(
+                c.red('[') + detail + c.red(']') + c.yellow(' ' + message.message) + ' (' + message.rule.id + ')'
+            );
+        });
+    };
+
+    /* see all gulpHtmlmin options: https://github.com/kangax/html-minifier */
+    /* see all gulpHtmlhint options: https://github.com/yaniswang/HTMLHint/wiki/Rules */
+
+    var filter  = gulpFilter(['**', '!partials/*']);
+
     gulp.src(options.paths.mustache)
         .pipe(gulpPlumber())
 
         .pipe(gulpChanged(options.paths.dest.mustache))
         .pipe(mustacheRender())
+
+        .pipe(filter)
+        .pipe(gulpHtmlhint({
+            'tagname-lowercase': true,
+            'attr-lowercase': true,
+            'attr-value-double-quotes': true,
+            'attr-value-not-empty': true,
+            'attr-no-duplication': true,
+            'doctype-first': true,
+            'tag-pair': true,
+            'tag-self-close': true,
+            'spec-char-escape': true,
+            'id-unique': true,
+            'src-not-empty': true,
+        }))
+        .pipe(gulpHtmlhint.reporter(reporter))
+        .pipe(filter.restore())
+
+        .pipe(gulpHtmlmin({collapseWhitespace: true}))
+
         .pipe(gulp.dest(options.paths.dest.mustache));
 });
 /* end task: templates */
@@ -384,7 +440,7 @@ gulp.task('test', function() {
     var execOptions = {
         continueOnError: false, // default = false, true means don't emit error event
         pipeStdout: true, // default = false, true means stdout is written to file.contents
-        customTemplatingThing: "" // content passed to gutil.template()
+        customTemplatingThing: "" // content passed to gulpUtil.template()
     };
 
     var reportOptions = {
