@@ -2,7 +2,7 @@
 /**
  * todo: gulp-htmlmin+
  * todo: gulp-htmlhint+
- * todo: gulp-csslint, gulp-csscomb
+ * todo: gulp-csslint+, gulp-csscomb+
  * todo: gulp-jslint
  * todo: css sprites (gulp-spritesmith)
  * todo: cssnext;
@@ -29,6 +29,8 @@ var gulp = require('gulp');
 var gulpChanged = require('gulp-changed');
 var gulpConcat = require('gulp-concat');
 var gulpCsso = require('gulp-csso');
+var gulpCsscomb = require('gulp-csscomb');
+var gulpCsslint = require('gulp-csslint');
 var gulpExec = require('gulp-exec');
 var gulpFilter = require('gulp-filter');
 var gulpHtmlmin = require('gulp-htmlmin');
@@ -226,19 +228,105 @@ gulp.task('styles', function() {
 
     vendors = _.union(vendors, options.paths.styles);
 
+    /* custom reporter for gulpCsslint*/
+    var customReporter = function(file) {
+        if(Object.keys(file.csslint.results[0].error.rule).length <= 0){
+            return false;
+        }
+
+        var c = gulpUtil.colors;
+        process.stderr.write('\x07'); // Send a beep to the terminal so it bounces
+
+        var errorCount = file.csslint.errorCount;
+        var plural = errorCount === 1 ? '' : 's';
+
+        gulpUtil.log(c.cyan(errorCount)+' error'+plural+' found in '+c.magenta(file.path));
+
+        file.csslint.results.forEach(function(result) {
+            var message = result.error;
+
+            gulpUtil.log(
+                c.red('[') +
+                (
+                    typeof message.line !== 'undefined' ?
+                    c.yellow( 'L' + message.line ) +
+                    c.red(':') +
+                    c.yellow( 'C' + message.col )
+                        :
+                        c.yellow('GENERAL')
+                ) +
+                c.red('] ') +
+                message.message + ' ' + message.rule.desc + ' (' + message.rule.id + ')');
+        });
+    };
+
     return gulp.src(vendors)
         .pipe(gulpPlumber())
+
         .pipe(gulpSourcemaps.init())
+
         .pipe(gulpIf(/.less/, lessRender()))
+
         .pipe(urlRebase())
         .pipe(autoprefixerRender())
         .pipe(gulpCsso())
+
+        .pipe(gulpCsslint({
+            'adjoining-classes': false,
+            'box-model': false,
+            'box-sizing': false,
+            'compatible-vendor-prefixes': false,
+            'empty-rules': true,
+            'display-property-grouping': true,
+            'duplicate-background-images': true,
+            'duplicate-properties': true,
+            'fallback-colors': false,
+            'floats': false,
+            'font-faces': false,
+            'font-sizes': true,
+            'gradients': false,
+            'ids': true,
+            'import': true,
+            'important': false,
+            'known-properties': false,
+            'outline-none': false,
+            'overqualified-elements': false,
+            'qualified-headings': true,
+            'regex-selectors': true,
+            'shorthand': false,
+            'star-property-hack': false,
+            'text-indent': false,
+            'underscore-property-hack': false,
+            'unique-headings': false,
+            'universal-selector': false,
+            'unqualified-attributes': false,
+            'vendor-prefix': false,
+            'zero-units': true,
+        }))
+        .pipe(gulpCsslint.reporter(customReporter))
+
         .pipe(gulpConcat(options.paths.dest.styleFileName))
+
         .pipe(gulpSourcemaps.write('.'))
+
         .pipe(gulp.dest(options.paths.dest.styles))
         ;
+
+        /* see all gulpHtmlmin options: https://github.com/CSSLint/csslint/wiki/Rules-by-ID */
 });
 /* end task: styles */
+
+/* start task: csscomb */
+gulp.task('csscomb', function() {
+    return gulp.src(options.paths.styles, {base: './'})
+        .pipe(gulpPlumber())
+
+        .pipe(gulpCsscomb())
+
+        .pipe(gulp.dest('./'))
+        ;
+});
+/* end task: csscomb */
 
 /* start task: bower:assets */
 gulp.task('bower:assets', function() {
