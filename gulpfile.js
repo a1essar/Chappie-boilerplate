@@ -1,10 +1,6 @@
 
 /**
- * todo: gulp-htmlmin+
- * todo: gulp-htmlhint+
- * todo: gulp-csslint+, gulp-csscomb+
  * todo: gulp-jslint
- * todo: css sprites (gulp-spritesmith)
  * todo: cssnext;
  * todo: replace jquery of bean, qwery, bonzo, reqwest
  */
@@ -40,6 +36,7 @@ var gulpImage = require('gulp-image');
 var gulpGhPages = require('gulp-gh-pages');
 var gulpPlumber = require('gulp-plumber');
 var gulpSourcemaps = require('gulp-sourcemaps');
+var gulpSpritesmith = require('gulp.spritesmith');
 var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpWebp = require('gulp-webp');
 var gulpUtil = require('gulp-util');
@@ -522,6 +519,56 @@ gulp.task('optimize-images', function () {
         ;
 });
 /* end task: optimize-images */
+
+/* start task: sprites */
+gulp.task('sprites', function () {
+    var types = ['png', 'jpg'];
+
+    types.forEach(function (type, i) {
+        spriteDirs(type);
+    });
+
+    function spriteDirs(type){
+        var files = fs.readdirSync('src/client/images/sprites' + '/' + type);
+        var dirs = [];
+
+        files.forEach(function(file, i){
+            var stat = fs.statSync('src/client/images/sprites' + '/' + type + '/' + file);
+
+            if(stat.isDirectory()){
+                dirs.push(file);
+            }
+        });
+
+        dirs.forEach(function (dir, i) {
+            spriteRender(dir, type);
+        });
+    }
+
+    function spriteRender(dir, type){
+        var spriteData = gulp.src('src/client/images/sprites' + '/' + type + '/' + dir + '/*.' + type)
+            .pipe(gulpPlumber())
+
+            .pipe(gulpSpritesmith({
+                imgName: 'sprite-' + dir + '.' + type,
+                cssName: 'sprite-' + dir + '.less',
+                cssFormat: 'less',
+                algorithm: 'top-down',
+                padding: 20,
+                cssVarMap: function (sprite) {
+                    sprite.name = 'sprite-' + dir + '-' + sprite.name;
+                },
+                cssSpritesheetName: 'spritesheet-' + dir
+            }));
+
+        spriteData.img
+            .pipe(gulp.dest('src/client/images'));
+
+        spriteData.css
+            .pipe(gulp.dest('src/client/styles/less/sprites'));
+    }
+});
+/* end task: sprites */
 
 /* start task: test */
 gulp.task('test', function() {

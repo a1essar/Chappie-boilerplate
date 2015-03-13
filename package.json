@@ -37,6 +37,7 @@
     "gulp-ttf2woff": "^1.0.0",
     "gulp-util": "^3.0.4",
     "gulp-webp": "^2.2.0",
+    "gulp.spritesmith": "^3.2.0",
     "imagemin-jpegtran": "^4.0.0",
     "lazypipe": "^0.2.2",
     "less": "^2.2.0",
