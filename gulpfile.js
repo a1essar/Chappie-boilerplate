@@ -1,5 +1,6 @@
 
 /**
+ * todo: gulp build only changed files (fix assets and templates)
  * todo: webp less mixin
  * todo: gulp-jslint
  * todo: cssnext;
@@ -599,7 +600,8 @@ gulp.task('browser-sync', function() {
         notify: false,
         server: {
             baseDir: 'dist'
-        }
+        },
+        'no-online': true
     });
 });
 /* end: browser-sync */
