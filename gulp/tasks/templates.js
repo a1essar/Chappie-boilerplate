@@ -12,6 +12,14 @@ var options = require('../config');
 
 var mustacheRender = require('../utils/mustache-render');
 
+/* start copy:templates */
+gulp.task('copy:templates', function (callback) {
+    return gulp.src(options.paths.templates)
+        .pipe(gulpChanged(options.paths.dest.templates))
+        .pipe(gulp.dest(options.paths.dest.templates));
+});
+/* end copy:templates */
+
 /* start task: templates */
 gulp.task('templates', function(){
 
