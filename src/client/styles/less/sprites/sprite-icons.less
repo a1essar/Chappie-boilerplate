@@ -1,0 +1,106 @@
+/*
+LESS variables are information about icon's compiled state, stored under its original file name
+
+.icon-home {
+  width: @icon-home-width;
+}
+
+The large array-like variables contain all information about a single icon
+@icon-home: x y offset_x offset_y width height total_width total_height image_path name;
+
+At the bottom of this section, we provide information about the spritesheet itself
+@spritesheet: width height image @spritesheet-sprites;
+*/
+@sprite-icons-check-name: sprite-icons-check;
+@sprite-icons-check-x: 0px;
+@sprite-icons-check-y: 0px;
+@sprite-icons-check-offset-x: 0px;
+@sprite-icons-check-offset-y: 0px;
+@sprite-icons-check-width: 128px;
+@sprite-icons-check-height: 128px;
+@sprite-icons-check-total-width: 128px;
+@sprite-icons-check-total-height: 424px;
+@sprite-icons-check-image: 'sprite-icons.png';
+@sprite-icons-check: 0px 0px 0px 0px 128px 128px 128px 424px 'sprite-icons.png' sprite-icons-check;
+@sprite-icons-search-name: sprite-icons-search;
+@sprite-icons-search-x: 0px;
+@sprite-icons-search-y: 148px;
+@sprite-icons-search-offset-x: 0px;
+@sprite-icons-search-offset-y: -148px;
+@sprite-icons-search-width: 128px;
+@sprite-icons-search-height: 128px;
+@sprite-icons-search-total-width: 128px;
+@sprite-icons-search-total-height: 424px;
+@sprite-icons-search-image: 'sprite-icons.png';
+@sprite-icons-search: 0px 148px 0px -148px 128px 128px 128px 424px 'sprite-icons.png' sprite-icons-search;
+@sprite-icons-star-name: sprite-icons-star;
+@sprite-icons-star-x: 0px;
+@sprite-icons-star-y: 296px;
+@sprite-icons-star-offset-x: 0px;
+@sprite-icons-star-offset-y: -296px;
+@sprite-icons-star-width: 121px;
+@sprite-icons-star-height: 128px;
+@sprite-icons-star-total-width: 128px;
+@sprite-icons-star-total-height: 424px;
+@sprite-icons-star-image: 'sprite-icons.png';
+@sprite-icons-star: 0px 296px 0px -296px 121px 128px 128px 424px 'sprite-icons.png' sprite-icons-star;
+@spritesheet-icons-width: 128px;
+@spritesheet-icons-height: 424px;
+@spritesheet-icons-image: 'sprite-icons.png';
+@spritesheet-icons-sprites: @sprite-icons-check @sprite-icons-search @sprite-icons-star;
+@spritesheet-icons: 128px 424px 'sprite-icons.png' @spritesheet-icons-sprites;
+
+/*
+The provided classes are intended to be used with the array-like variables
+
+.icon-home {
+  .sprite-width(@icon-home);
+}
+.icon-email {
+  .sprite(@icon-email);
+}
+*/
+.sprite-width(@sprite) {
+  width: extract(@sprite, 5);
+}
+
+.sprite-height(@sprite) {
+  height: extract(@sprite, 6);
+}
+
+.sprite-position(@sprite) {
+  @sprite-offset-x: extract(@sprite, 3);
+  @sprite-offset-y: extract(@sprite, 4);
+  background-position: @sprite-offset-x @sprite-offset-y;
+}
+
+.sprite-image(@sprite) {
+  @sprite-image: extract(@sprite, 9);
+  @sprite-image-bare: ~`"@{sprite-image}".slice(1, -1)`;
+  background-image: url(@sprite-image-bare);
+}
+
+.sprite(@sprite) {
+  .sprite-image(@sprite);
+  .sprite-position(@sprite);
+  .sprite-width(@sprite);
+  .sprite-height(@sprite);
+}
+
+/*
+The `.sprites` mixin generates identical output to the CSS template
+  but can be overridden inside of LESS
+
+This must be run when you have at least 2 sprites.
+  If run with a single sprite, then there will be reference errors.
+
+.sprites(@spritesheet-sprites);
+*/
+.sprites(@sprites, @i: 1) when (@i <= length(@sprites)) {
+  @sprite: extract(@sprites, @i);
+  @sprite-name: extract(@sprite, 10);
+  .@{sprite-name} {
+    .sprite(@sprite);
+  }
+  .sprites(@sprites, @i + 1);
+}
