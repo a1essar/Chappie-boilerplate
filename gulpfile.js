@@ -15,6 +15,7 @@ var del = require('del');
 var runSequence = require('run-sequence');
 var vinylPaths = require('vinyl-paths');
 var requireDir = require('require-dir');
+var browserSync = require('browser-sync');
 
 var gulp = require('gulp');
 var gulpChanged = require('gulp-changed');
