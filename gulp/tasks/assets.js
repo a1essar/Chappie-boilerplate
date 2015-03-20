@@ -53,10 +53,10 @@ gulp.task('bower:assets', function() {
 
 /* start copy:assets */
 gulp.task('copy:assets', ['bower:assets'], function (callback) {
-    var imagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);
-    var fontsFilter = gulpFilter(['*.eot', '*.ttf', '*.woff', '*.woff2']);
-    var jsonFilter = gulpFilter(['*.json']);
-    var svgFilter = gulpFilter(['*.svg']);
+    var imagesFilter = gulpFilter(['*.jpg$', '*.png$', '*.gif$', '*.jpeg$']);
+    var fontsFilter = gulpFilter(['*.eot$', '*.ttf$', '*.woff$', '*.woff2$']);
+    var jsonFilter = gulpFilter(['*.json$']);
+    var svgFilter = gulpFilter(['*.svg$']);
 
     return gulp.src(options.paths.assets)
         .pipe(gulpPlumber())

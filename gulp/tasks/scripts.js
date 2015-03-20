@@ -17,7 +17,7 @@ gulp.task('scripts', function(callback) {
             bowerrc: '.bowerrc',
             bowerJson: 'bower.json'
         },
-        filter: /.js/
+        filter: /.js$/
     });
 
     var modules = {};

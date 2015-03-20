@@ -27,7 +27,7 @@ gulp.task('styles', function() {
             bowerrc: '.bowerrc',
             bowerJson: 'bower.json'
         },
-        filter: /.less|.css/
+        filter: /.less$|.css$/
     });
 
     vendors = _.union(vendors, options.paths.styles);
