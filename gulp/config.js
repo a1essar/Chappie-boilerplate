@@ -34,7 +34,10 @@ var config = {
         'json': 'src/client/json/**',
         'svg': 'src/client/svg/**',
         'templates': [
-            'src/client/templates/**'
+            'src/client/templates/*.html',
+            'src/client/templates/**/*.html',
+            'src/client/templates/*.mustache',
+            'src/client/templates/**/*.mustache'
         ],
         'mustache': [
             'src/client/templates/mustache/*.mustache',

@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var gulpDebug = require('gulp-debug');
 var gulpChanged = require('gulp-changed');
 var gulpFilter = require('gulp-filter');
 var gulpHtmlmin = require('gulp-htmlmin');
@@ -16,6 +17,7 @@ var mustacheRender = require('../utils/mustache-render');
 gulp.task('copy:templates', function (callback) {
     return gulp.src(options.paths.templates)
         .pipe(gulpChanged(options.paths.dest.templates))
+        .pipe(gulpDebug({title: 'copy changed templates:'}))
         .pipe(gulp.dest(options.paths.dest.templates));
 });
 /* end copy:templates */
@@ -55,7 +57,6 @@ gulp.task('templates', function(){
     gulp.src(options.paths.mustache)
         .pipe(gulpPlumber())
 
-        .pipe(gulpChanged(options.paths.dest.mustache))
         .pipe(mustacheRender())
 
         .pipe(filter)
@@ -76,6 +77,9 @@ gulp.task('templates', function(){
         .pipe(filter.restore())
 
         .pipe(gulpHtmlmin({collapseWhitespace: true}))
+
+        .pipe(gulpChanged(options.paths.dest.mustache))
+        .pipe(gulpDebug({title: 'render changed templates:'}))
 
         .pipe(gulp.dest(options.paths.dest.mustache));
 });
