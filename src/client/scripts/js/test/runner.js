@@ -1,3 +1,9 @@
+/**
+ *
+ * */
+
+'use strict';
+
 require.config({
     baseUrl: "../",
     paths: {

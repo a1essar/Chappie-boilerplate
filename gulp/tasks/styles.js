@@ -39,7 +39,9 @@ gulp.task('styles', function() {
         }
 
         var c = gulpUtil.colors;
-        process.stderr.write('\x07'); // Send a beep to the terminal so it bounces
+
+        // Send a beep to the terminal so it bounces
+        //process.stderr.write('\x07');
 
         var errorCount = file.csslint.errorCount;
         var plural = errorCount === 1 ? '' : 's';

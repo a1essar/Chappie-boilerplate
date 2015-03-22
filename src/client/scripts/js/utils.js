@@ -1,6 +1,12 @@
+/**
+ *
+ * */
 define([
+    'underscore',
+    'jquery',
+    'modernizr',
     'utils/callback'
-],  function (callback) {
+],  function ($, _, Modernizr, callback) {
     'use strict';
 
     console.log('%cfile: utils.js', 'color: #C2ECFF');
@@ -8,12 +14,8 @@ define([
     var utils = {};
     utils.callback = callback;
 
-    utils.test = function(){
-        return false;
-    };
-
     utils.webpTest = function(){
-        var a = new Image;
+        var a = new Image();
 
         a.onerror = function(){
             Modernizr.addTest("webp",!1);
@@ -21,7 +23,7 @@ define([
 
         a.onload = function(){
             Modernizr.addTest("webp", function(){
-                return a.width==1
+                return a.width === 1;
             });
         };
 
@@ -51,10 +53,10 @@ define([
             data : {},
             type: 'post',
             dataType: 'json',
-            doneCallback: function(data){
+            doneCallback: function(){
 
             },
-            failCallback: function(data){
+            failCallback: function(){
 
             }
         }, options);

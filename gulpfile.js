@@ -3,11 +3,12 @@
  * */
 
 /**
- * todo: gulp build only changed files (fix assets and templates)
+ * todo: h5bp
  * todo: webp less mixin
  * todo: gulp-jslint
+ * todo: mustache views in json format and js
  * todo: cssnext;
- * todo: replace jquery of bean, qwery, bonzo, reqwest
+ * todo: es6;
  * */
 'use strict';
 

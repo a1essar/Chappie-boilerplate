@@ -1,8 +1,12 @@
+/**
+ *
+ * */
 define([
     'domReady',
+    'jquery',
     'utils',
     'spin'
-],  function (domReady, utils, Spinner) {
+],  function (domReady, $, utils, Spinner) {
     'use strict';
 
     console.log('%cfile: form.js', 'color: #C2ECFF');
@@ -80,7 +84,7 @@ define([
 
                 utils.callback.done(data);
             },
-            failCallback: function(data){
+            failCallback: function(){
                 spinner.stop();
                 $el.css('position', '').css('width', '').css('height', '').html(caption);
                 $el.removeAttr('disabled', 'disabled');

@@ -1,3 +1,6 @@
+/**
+ *
+ * */
 define([
 ],  function () {
     'use strict';
@@ -26,13 +29,14 @@ define([
     };
 
     callback.defaults = {
-        'error': function(type, text, parameters){
+        'error': function(){
             console.log('%ctrace: callback.defaults.error', 'color: #ccc');
         },
-        'success': function(type, text, parameters){
+        'success': function(){
             console.log('%ctrace: callback.defaults.success', 'color: #ccc');
         }
     };
 
     return callback;
+
 });

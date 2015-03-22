@@ -32,7 +32,8 @@ gulp.task('templates', function(){
         var errorCount = file.htmlhint.errorCount;
         var plural = errorCount === 1 ? '' : 's';
 
-        process.stderr.write('\x07'); // Send a beep to the terminal so it bounces
+        // Send a beep to the terminal so it bounces
+        //process.stderr.write('\x07');
 
         gulpUtil.log(c.cyan(errorCount) + ' error' + plural + ' found in ' + c.magenta(file.path));
 

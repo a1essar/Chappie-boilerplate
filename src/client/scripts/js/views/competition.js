@@ -1,4 +1,9 @@
+/**
+ *
+ * */
 (function() {
+    'use strict';
+
     var competition = {
         "list": [
             {
@@ -34,8 +39,8 @@
         ]
     };
 
-    Object.keys(competition.list).forEach(function (el, index) {
-        competition.list[index]['index'] = index + 1;
+    Object.keys(competition.list).forEach(function (el, i) {
+        competition.list[i].index = i + 1;
     });
 
     return competition;

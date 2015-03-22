@@ -1,5 +1,10 @@
+/**
+ *
+ * */
 define(['chai', 'utils'], function(chai, utils) {
-    describe('Testing "utils.js"', function(done){
+    'use strict';
+
+    describe('Testing "utils.js"', function(){
         it('utils.test()', function(){
             chai.expect(utils.test()).to.be.not.ok();
         });

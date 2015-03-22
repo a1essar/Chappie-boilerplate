@@ -1,7 +1,6 @@
-/*
-*
-* */
-
+/**
+ *
+ * */
 define([
     'domReady',
     'jquery',
@@ -38,7 +37,7 @@ define([
 
         utils.shims();
 
-        var form = new Form();
+        Form();
 
         domReady(function () {
             console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');

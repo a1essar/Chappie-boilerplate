@@ -5,6 +5,9 @@ var mainBowerFiles = require('main-bower-files');
 var path = require('path');
 
 var gulp = require('gulp');
+var gulpJshint = require('gulp-jshint');
+var gulpJscs = require('gulp-jscs');
+var gulpPlumber = require('gulp-plumber');
 
 var options = require('../config');
 
@@ -55,3 +58,20 @@ gulp.task('scripts', function(callback) {
     }, callback);
 });
 /* end task: scripts */
+
+/* start jshint */
+gulp.task('jshint', function (callback) {
+    return gulp.src(options.paths.scripts)
+        .pipe(gulpPlumber())
+        .pipe(gulpJshint())
+        .pipe(gulpJshint.reporter('unix'));
+});
+/* end jshint */
+
+/* start jscs */
+gulp.task('jscs', function (callback) {
+    return gulp.src(options.paths.scripts)
+        .pipe(gulpPlumber())
+        .pipe(gulpJscs());
+});
+/* end jscs */
