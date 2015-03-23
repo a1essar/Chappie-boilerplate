@@ -2,11 +2,11 @@
  *
  * */
 define([
-    'underscore',
     'jquery',
-    'modernizr',
-    'utils/callback'
-],  function ($, _, Modernizr, callback) {
+    'underscore',
+    'utils/callback',
+    'modernizr'
+], function ($, _, callback) {
     'use strict';
 
     console.log('%cfile: utils.js', 'color: #C2ECFF');
@@ -18,7 +18,7 @@ define([
         var a = new Image();
 
         a.onerror = function(){
-            Modernizr.addTest('webp',!1);
+            Modernizr.addTest('webp', !1);
         };
 
         a.onload = function(){
@@ -27,12 +27,16 @@ define([
             });
         };
 
+        /* eslint-disable space-infix-ops */
         a.src='data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAAAUAgCdASoBAAEAL/3+/3+CAB/AAAFzrNsAAP5QAAAAAA==';
+        /* eslint-enable space-infix-ops */
     };
 
     utils.locationOrigin = function(){
         if (!window.location.origin) {
+            /* eslint-disable space-infix-ops */
             window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+            /* eslint-enable space-infix-ops */
         }
 
         return window.location.origin;
@@ -49,8 +53,8 @@ define([
         console.log('%ctrace: utils.ajax', 'color: #ccc');
 
         var settings = _.extend({
-            url : '/',
-            data : {},
+            url: '/',
+            data: {},
             type: 'post',
             dataType: 'json',
             doneCallback: function(){
@@ -63,7 +67,7 @@ define([
 
         $.ajax({
             url: settings.url,
-            cache : false,
+            cache: false,
             data: settings.data,
             type: settings.type,
             dataType: settings.dataType

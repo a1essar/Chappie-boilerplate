@@ -6,15 +6,14 @@ define([
     'jquery',
     'utils',
     'spin'
-],  function (domReady, $, utils, Spinner) {
+], function (domReady, $, utils, Spinner) {
     'use strict';
 
     console.log('%cfile: form.js', 'color: #C2ECFF');
 
     /** private */
-    var _this,
-        el = '.js__ajax-form',
-        _defaults = {
+    var el = '.js__ajax-form',
+        defaults = {
             'spinner': {
                 lines: 13,
                 length: 6,
@@ -33,14 +32,16 @@ define([
                 top: '50%',
                 left: '50%'
             }
-        };
+        },
+        submit,
+        ModuleApi;
 
     /** constructor */
     function Module(){
         console.log('%ctrace: Form -> constructor', 'color: #ccc');
 
         /** public */
-        _this = this;
+        var self = this;
 
         domReady(function () {
             console.log('%ctrace: Form -> constructor -> domReady', 'color: #ccc');
@@ -48,41 +49,42 @@ define([
             $('body').off('click', el).on('click', el, function(e){
                 e.preventDefault();
 
-                submit(e);
+                submit(e, self);
             });
         });
     }
 
-    function submit(e){
+    submit = function submit(e){
         console.log('%ctrace: Form -> submit', 'color: #ccc');
 
         var $el = $(e.currentTarget),
         $form = $el.parents('form'),
         action = $el.attr('data-action') || $form.attr('action'),
         data = $form.serialize(),
-        caption = $el.html();
+        caption = $el.html(),
+        spinner;
 
         $el.css('position', 'relative').css('width', $el.outerWidth()).css('height', $el.outerHeight()).html('&nbsp');
 
-        var spinner = new Spinner(_defaults.spinner).spin($el[0]);
+        spinner = new Spinner(defaults.spinner).spin($el[0]);
 
         $el.attr('disabled', 'disabled');
 
         utils.ajax({
             url: action,
             data: data,
-            doneCallback: function(data){
+            doneCallback: function(ajaxData){
                 spinner.stop();
                 $el.css('position', '').css('width', '').css('height', '').html(caption);
                 $el.removeAttr('disabled', 'disabled');
 
-                if(!data.hasOwnProperty('parameters')){
-                    data.parameters = {};
+                if(!ajaxData.hasOwnProperty('parameters')){
+                    ajaxData.parameters = {};
                 }
 
-                data.parameters.$form = $form;
+                ajaxData.parameters.$form = $form;
 
-                utils.callback.done(data);
+                utils.callback.done(ajaxData);
             },
             failCallback: function(){
                 spinner.stop();
@@ -90,9 +92,9 @@ define([
                 $el.removeAttr('disabled', 'disabled');
             }
         });
-    }
+    };
 
-    var ModuleApi = function ModuleApi(){
+    ModuleApi = function ModuleApi(){
         this.someMethod = function(){
 
         };

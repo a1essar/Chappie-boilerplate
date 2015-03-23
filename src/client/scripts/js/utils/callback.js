@@ -2,7 +2,7 @@
  *
  * */
 define([
-],  function () {
+], function () {
     'use strict';
 
     console.log('%cfile: callback.js', 'color: #C2ECFF');
@@ -12,11 +12,11 @@ define([
     callback.done = function(data){
         console.log('%ctrace: callback.done', 'color: #ccc', data);
 
-        var type = data.type;
-        var parameters = data.parameters || null;
-        var code = data.code;
-        var namespace = data.namespace || 'defaults';
-        var text = data.text;
+        var type = data.type,
+            parameters = data.parameters || null,
+            code = data.code,
+            namespace = data.namespace || 'defaults',
+            text = data.text;
 
         if(!this[namespace] || !this[namespace][code]){
             console.warn('%cCallback -> done: undefined callback', 'color: #FF7000');
