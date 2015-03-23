@@ -18,21 +18,21 @@ define([
         var a = new Image();
 
         a.onerror = function(){
-            Modernizr.addTest("webp",!1);
+            Modernizr.addTest('webp',!1);
         };
 
         a.onload = function(){
-            Modernizr.addTest("webp", function(){
+            Modernizr.addTest('webp', function(){
                 return a.width === 1;
             });
         };
 
-        a.src="data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAAAUAgCdASoBAAEAL/3+/3+CAB/AAAFzrNsAAP5QAAAAAA==";
+        a.src='data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAAAUAgCdASoBAAEAL/3+/3+CAB/AAAFzrNsAAP5QAAAAAA==';
     };
 
     utils.locationOrigin = function(){
         if (!window.location.origin) {
-            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
         }
 
         return window.location.origin;

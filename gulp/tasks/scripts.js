@@ -7,12 +7,13 @@ var path = require('path');
 var gulp = require('gulp');
 var gulpJshint = require('gulp-jshint');
 var gulpJscs = require('gulp-jscs');
+var gulpEslint = require('gulp-eslint');
 var gulpPlumber = require('gulp-plumber');
 
 var options = require('../config');
 
 /* start task: scripts */
-gulp.task('scripts', function(callback) {
+gulp.task('scripts', ['eslint'], function(callback) {
     var vendors = mainBowerFiles({
         paths: {
             paths: './',
@@ -75,3 +76,13 @@ gulp.task('jscs', function (callback) {
         .pipe(gulpJscs());
 });
 /* end jscs */
+
+/* start eslint */
+gulp.task('eslint', function (callback) {
+    return gulp.src(options.paths.scripts)
+        .pipe(gulpPlumber())
+        .pipe(gulpEslint())
+        .pipe(gulpEslint.format())
+        .pipe(gulpEslint.failOnError());
+});
+/* end eslint */

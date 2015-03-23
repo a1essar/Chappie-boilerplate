@@ -92,13 +92,13 @@ define([
         });
     }
 
-    var moduleApi = function moduleApi(){
-        this.method = function(){
+    var ModuleApi = function ModuleApi(){
+        this.someMethod = function(){
 
         };
     };
 
-    Module.prototype = new moduleApi();
+    Module.prototype = new ModuleApi();
 
     return Module;
 });

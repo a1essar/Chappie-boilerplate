@@ -37,7 +37,8 @@ define([
 
         utils.shims();
 
-        Form();
+        var form = new Form();
+        form.someMethod();
 
         domReady(function () {
             console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');
