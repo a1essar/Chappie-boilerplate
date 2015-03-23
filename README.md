@@ -2,6 +2,14 @@ Happy Starter
 ===
 Work in progress
 
+Mac OS
+
+install nodejs and npm latest version
+
+sudo install bower -g
+sudo install gulp
+sudo install cordova -g
+
 ## Roadmap
 
 ### v1.0.0
