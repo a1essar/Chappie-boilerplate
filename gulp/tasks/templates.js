@@ -53,7 +53,7 @@ gulp.task('templates', function(){
     /* see all gulpHtmlmin options: https://github.com/kangax/html-minifier */
     /* see all gulpHtmlhint options: https://github.com/yaniswang/HTMLHint/wiki/Rules */
 
-    var filter  = gulpFilter(['**', '!partials/*']);
+    var filter = gulpFilter(['**', '!partials/*']);
 
     gulp.src(options.paths.mustache)
         .pipe(gulpPlumber())

@@ -7,7 +7,9 @@ var gulp = require('gulp');
 var gulpConcat = require('gulp-concat');
 var gulpCsso = require('gulp-csso');
 var gulpCsslint = require('gulp-csslint');
+var gulpDebug = require('gulp-debug');
 var gulpIf = require('gulp-if');
+var gulpFilter = require('gulp-filter');
 var gulpSourcemaps = require('gulp-sourcemaps');
 var gulpPlumber = require('gulp-plumber');
 var gulpUtil = require('gulp-util');
@@ -31,6 +33,10 @@ gulp.task('styles', function() {
     });
 
     vendors = _.union(vendors, options.paths.styles);
+
+    var stylesFilter = gulpFilter(function (file) {
+        return !/vendor/.test(file.path);
+    });
 
     /* custom reporter for gulpCsslint*/
     var customReporter = function(file) {
@@ -77,6 +83,8 @@ gulp.task('styles', function() {
         .pipe(autoprefixerRender())
         .pipe(gulpCsso())
 
+        .pipe(stylesFilter)
+        .pipe(gulpDebug())
         .pipe(gulpCsslint({
             'adjoining-classes': false,
             'box-model': false,
@@ -111,6 +119,7 @@ gulp.task('styles', function() {
             'bulletproof-font-face': false
         }))
         .pipe(gulpCsslint.reporter(customReporter))
+        .pipe(stylesFilter.restore())
 
         .pipe(gulpConcat(options.paths.dest.styleFileName))
 
