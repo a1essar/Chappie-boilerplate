@@ -19,7 +19,7 @@ define([
             text = data.text;
 
         if (!this[namespace] || !this[namespace][code]) {
-            console.warn('%cCallback -> done: undefined callback', 'color: #FF7000');
+            console.warn('%ccallback -> done: undefined callback', 'color: #FF7000');
             return false;
         }
 

@@ -1,4 +1,5 @@
 /**
+ * todo: move Mustache views in JSON and loaded into js for edit and render templates
  *
  * */
 define([
@@ -11,32 +12,21 @@ define([
     'text!../../json/config.json',
     'utils',
     'modules/form'
-], function (domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Form) {
+], function (domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, form) {
     'use strict';
 
     console.log('%cfile: app.js', 'color: #C2ECFF');
 
-    /** private */
     var defaults = JSON.parse(config);
 
-    /**
-     *
-     */
     function app() {
-        console.log('%ctrace: App -> constructor', 'color: #ccc');
-
-        /** public */
-        this.options = _.extend({},
-            defaults
-        );
+        console.log('%ctrace: app()', 'color: #ccc');
 
         utils.shims();
-
-        var form = new Form();
-        form.someMethod();
+        form(defaults);
 
         domReady(function () {
-            console.log('%ctrace: App -> constructor -> domReady', 'color: #ccc');
+            console.log('%ctrace: app() -> domReady', 'color: #ccc');
         });
     }
 

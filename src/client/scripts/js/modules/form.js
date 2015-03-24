@@ -4,17 +4,17 @@
 define([
     'domReady',
     'jquery',
+    'underscore',
     'utils',
     'spin'
-], function (domReady, $, utils, Spinner) {
+], function (domReady, $, _, utils, Spinner) {
     'use strict';
 
     console.log('%cfile: form.js', 'color: #C2ECFF');
 
-    /** private */
     var el = '.js__ajax-form',
         defaults = {
-            'spinner': {
+            spinner: {
                 lines: 13,
                 length: 6,
                 width: 2,
@@ -33,29 +33,26 @@ define([
                 left: '50%'
             }
         },
-        submit,
-        ModuleApi;
+        submit;
 
-    /** constructor */
-    function Module() {
-        console.log('%ctrace: Form -> constructor', 'color: #ccc');
+    function module(options) {
+        console.log('%ctrace: module form: form()', 'color: #ccc');
 
-        /** public */
-        var self = this;
+        defaults = _.extend(options, defaults);
 
         domReady(function () {
-            console.log('%ctrace: Form -> constructor -> domReady', 'color: #ccc');
+            console.log('%ctrace: module form: form() -> domReady', 'color: #ccc');
 
             $('body').off('click', el).on('click', el, function(e) {
                 e.preventDefault();
 
-                submit(e, self);
+                submit(e);
             });
         });
     }
 
     submit = function submit(e) {
-        console.log('%ctrace: Form -> submit', 'color: #ccc');
+        console.log('%ctrace: module form: submit()', 'color: #ccc');
 
         var $el = $(e.currentTarget),
         $form = $el.parents('form'),
@@ -94,13 +91,5 @@ define([
         });
     };
 
-    ModuleApi = function ModuleApi() {
-        this.someMethod = function() {
-
-        };
-    };
-
-    Module.prototype = new ModuleApi();
-
-    return Module;
+    return module;
 });
