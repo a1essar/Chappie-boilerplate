@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var gulpConcat = require('gulp-concat');
 var gulpCsso = require('gulp-csso');
 var gulpCsslint = require('gulp-csslint');
+var gulpCsscomb = require('gulp-csscomb');
 var gulpDebug = require('gulp-debug');
 var gulpIf = require('gulp-if');
 var gulpFilter = require('gulp-filter');
@@ -79,12 +80,7 @@ gulp.task('styles', function() {
 
         .pipe(gulpIf(/.less/, lessRender()))
 
-        .pipe(urlRebase())
-        .pipe(autoprefixerRender())
-        .pipe(gulpCsso())
-
         .pipe(stylesFilter)
-        .pipe(gulpDebug())
         .pipe(gulpCsslint({
             'adjoining-classes': false,
             'box-model': false,
@@ -121,6 +117,10 @@ gulp.task('styles', function() {
         .pipe(gulpCsslint.reporter(customReporter))
         .pipe(stylesFilter.restore())
 
+        .pipe(urlRebase())
+        .pipe(autoprefixerRender())
+        .pipe(gulpCsso())
+
         .pipe(gulpConcat(options.paths.dest.styleFileName))
 
         .pipe(gulpSourcemaps.write('.'))
@@ -128,6 +128,18 @@ gulp.task('styles', function() {
         .pipe(gulp.dest(options.paths.dest.styles))
         ;
 
-    /* see all gulpHtmlmin options: https://github.com/CSSLint/csslint/wiki/Rules-by-ID */
+    /* see all gulpCsslint options: https://github.com/CSSLint/csslint/wiki/Rules-by-ID */
 });
 /* end task: styles */
+
+/* start task: csscomb */
+gulp.task('csscomb', function() {
+    return gulp.src(options.paths.styles, {base: './'})
+        .pipe(gulpPlumber())
+
+        .pipe(gulpCsscomb())
+
+        .pipe(gulp.dest('./'))
+        ;
+});
+/* end task: csscomb */

@@ -3,7 +3,6 @@
 var fs = require('fs');
 
 var gulp = require('gulp');
-var gulpCsscomb = require('gulp-csscomb');
 var gulpPlumber = require('gulp-plumber');
 var gulpTtf2woff = require('gulp-ttf2woff');
 var gulpWebp = require('gulp-webp');
@@ -11,18 +10,6 @@ var gulpImage = require('gulp-image');
 var gulpSpritesmith = require('gulp.spritesmith');
 
 var options = require('../config');
-
-/* start task: csscomb */
-gulp.task('csscomb', function() {
-    return gulp.src(options.paths.styles, {base: './'})
-        .pipe(gulpPlumber())
-
-        .pipe(gulpCsscomb())
-
-        .pipe(gulp.dest('./'))
-        ;
-});
-/* end task: csscomb */
 
 /* start task: ttf2woff */
 gulp.task('ttf2woff', function(){
