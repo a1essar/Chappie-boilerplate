@@ -37,7 +37,7 @@ define([
         ModuleApi;
 
     /** constructor */
-    function Module(){
+    function Module() {
         console.log('%ctrace: Form -> constructor', 'color: #ccc');
 
         /** public */
@@ -46,7 +46,7 @@ define([
         domReady(function () {
             console.log('%ctrace: Form -> constructor -> domReady', 'color: #ccc');
 
-            $('body').off('click', el).on('click', el, function(e){
+            $('body').off('click', el).on('click', el, function(e) {
                 e.preventDefault();
 
                 submit(e, self);
@@ -54,7 +54,7 @@ define([
         });
     }
 
-    submit = function submit(e){
+    submit = function submit(e) {
         console.log('%ctrace: Form -> submit', 'color: #ccc');
 
         var $el = $(e.currentTarget),
@@ -73,12 +73,12 @@ define([
         utils.ajax({
             url: action,
             data: data,
-            doneCallback: function(ajaxData){
+            doneCallback: function(ajaxData) {
                 spinner.stop();
                 $el.css('position', '').css('width', '').css('height', '').html(caption);
                 $el.removeAttr('disabled', 'disabled');
 
-                if(!ajaxData.hasOwnProperty('parameters')){
+                if (!ajaxData.hasOwnProperty('parameters')) {
                     ajaxData.parameters = {};
                 }
 
@@ -86,7 +86,7 @@ define([
 
                 utils.callback.done(ajaxData);
             },
-            failCallback: function(){
+            failCallback: function() {
                 spinner.stop();
                 $el.css('position', '').css('width', '').css('height', '').html(caption);
                 $el.removeAttr('disabled', 'disabled');
@@ -94,8 +94,8 @@ define([
         });
     };
 
-    ModuleApi = function ModuleApi(){
-        this.someMethod = function(){
+    ModuleApi = function ModuleApi() {
+        this.someMethod = function() {
 
         };
     };

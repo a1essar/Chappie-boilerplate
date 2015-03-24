@@ -14,15 +14,15 @@ define([
     var utils = {};
     utils.callback = callback;
 
-    utils.webpTest = function(){
+    utils.webpTest = function() {
         var a = new Image();
 
-        a.onerror = function(){
+        a.onerror = function() {
             Modernizr.addTest('webp', !1);
         };
 
-        a.onload = function(){
-            Modernizr.addTest('webp', function(){
+        a.onload = function() {
+            Modernizr.addTest('webp', function() {
                 return a.width === 1;
             });
         };
@@ -32,7 +32,7 @@ define([
         /* eslint-enable space-infix-ops */
     };
 
-    utils.locationOrigin = function(){
+    utils.locationOrigin = function() {
         if (!window.location.origin) {
             /* eslint-disable space-infix-ops */
             window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
@@ -42,14 +42,14 @@ define([
         return window.location.origin;
     };
 
-    utils.shims = function(){
+    utils.shims = function() {
         console.log('%ctrace: utils.shims', 'color: #ccc');
 
         this.locationOrigin();
         this.webpTest();
     };
 
-    utils.ajax = function(options){
+    utils.ajax = function(options) {
         console.log('%ctrace: utils.ajax', 'color: #ccc');
 
         var settings = _.extend({
@@ -57,10 +57,10 @@ define([
             data: {},
             type: 'post',
             dataType: 'json',
-            doneCallback: function(){
+            doneCallback: function() {
 
             },
-            failCallback: function(){
+            failCallback: function() {
 
             }
         }, options);

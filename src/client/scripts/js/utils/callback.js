@@ -9,7 +9,7 @@ define([
 
     var callback = {};
 
-    callback.done = function(data){
+    callback.done = function(data) {
         console.log('%ctrace: callback.done', 'color: #ccc', data);
 
         var type = data.type,
@@ -18,7 +18,7 @@ define([
             namespace = data.namespace || 'defaults',
             text = data.text;
 
-        if(!this[namespace] || !this[namespace][code]){
+        if (!this[namespace] || !this[namespace][code]) {
             console.warn('%cCallback -> done: undefined callback', 'color: #FF7000');
             return false;
         }
@@ -29,10 +29,10 @@ define([
     };
 
     callback.defaults = {
-        'error': function(){
+        'error': function() {
             console.log('%ctrace: callback.defaults.error', 'color: #ccc');
         },
-        'success': function(){
+        'success': function() {
             console.log('%ctrace: callback.defaults.success', 'color: #ccc');
         }
     };

@@ -11,27 +11,22 @@ define([
     'text!../../json/config.json',
     'utils',
     'modules/form'
-], function ( domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Form ) {
+], function (domReady, $, _, Backbone, Modernizr, Detectizr, config, utils, Form) {
     'use strict';
 
     console.log('%cfile: app.js', 'color: #C2ECFF');
 
     /** private */
-    var defaults = JSON.parse(config),
-        self;
+    var defaults = JSON.parse(config);
 
-    /** constructor
-     * @return {boolean}
+    /**
+     *
      */
-    function App(){
+    function app() {
         console.log('%ctrace: App -> constructor', 'color: #ccc');
 
-        self = this;
-
         /** public */
-        this.options = _.extend({
-
-            },
+        this.options = _.extend({},
             defaults
         );
 
@@ -45,5 +40,5 @@ define([
         });
     }
 
-    return App;
+    return app;
 });

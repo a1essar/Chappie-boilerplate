@@ -23,9 +23,9 @@ require([
     'test/app',
     'test/utils'
 ], function() {
-    if (typeof mochaPhantomJS !== 'undefined'){
+    if (typeof mochaPhantomJS !== 'undefined') {
         mochaPhantomJS.run();
-    }else{
+    } else {
         mocha.run();
     }
 });
