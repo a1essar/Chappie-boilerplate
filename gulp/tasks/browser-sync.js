@@ -11,6 +11,7 @@ gulp.task('browser-sync', function() {
         server: {
             baseDir: 'dist'
         },
+        online: true,
         'no-online': true
     });
 });

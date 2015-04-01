@@ -1,47 +1,37 @@
-/**
- *
- * */
-(function() {
-    'use strict';
+'use strict';
 
-    var competition = {
-        'list': [
-            {
-                'name': 'User 1',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
-            },
-            {
-                'name': 'User 2',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
-            },
-            {
-                'name': 'User 3',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
-            },
-            {
-                'name': 'User 4',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
-            },
-            {
-                'name': 'User 5',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
-            },
-            {
-                'name': 'User 6',
-                'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti minus nobis quaerat quod saepe sequi voluptas! Doloremque ducimus, ea eligendi fugiat harum iure iusto, magni obcaecati praesentium quod rem veniam!',
-                'image': '../images/stub.jpg'
+(function (name, context, definition) {
+    /*eslint-disable */
+    if (typeof define === 'function' && define.amd) {
+        return define(['text!../../../json/competition.json'], definition);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        var fs = require('fs'),
+            view = fs.readFileSync('src/client/json/competition.json', 'utf8');
+        module.exports = definition(view);
+        return module.exports;
+    } else {
+        var r = new XMLHttpRequest(),
+            view;
+        r.open('GET', '/json/competition.json', true);
+        r.onreadystatechange = function () {
+            if (r.readyState !== 4 || r.status !== 200) {
+                return;
             }
-        ]
-    };
 
-    Object.keys(competition.list).forEach(function (el, i) {
-        competition.list[i].index = i + 1;
+            view = r.responseText;
+            context[name] = definition(view);
+        };
+        r.send();
+        return context[name];
+    }
+    /*eslint-enable */
+})('competition', this, function(view) {
+    view = JSON.parse(view) || {};
+
+    Object.keys(view.list).forEach(function (el, i) {
+        view.list[i].name = view.list[i].name + ' ' + parseInt(i + 1, 10);
+        view.list[i].index = i + 1;
     });
 
-    return competition;
-}());
+    return view;
+});

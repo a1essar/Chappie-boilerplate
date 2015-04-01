@@ -99,7 +99,7 @@
     "no-with": 1,
     "radix": 1,
     "vars-on-top": 0,
-    "wrap-iife": 1,
+    "wrap-iife": [1, "any"],
     "yoda": 1,
 
     // Strict Mode

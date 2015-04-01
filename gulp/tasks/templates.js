@@ -3,7 +3,6 @@
 var gulp = require('gulp');
 var gulpDebug = require('gulp-debug');
 var gulpChanged = require('gulp-changed');
-var gulpFilter = require('gulp-filter');
 var gulpHtmlmin = require('gulp-htmlmin');
 var gulpHtmlhint = require("gulp-htmlhint");
 var gulpUtil = require('gulp-util');
@@ -53,14 +52,13 @@ gulp.task('templates', function(){
     /* see all gulpHtmlmin options: https://github.com/kangax/html-minifier */
     /* see all gulpHtmlhint options: https://github.com/yaniswang/HTMLHint/wiki/Rules */
 
-    var filter = gulpFilter(['**', '!partials/*']);
-
     gulp.src(options.paths.mustache)
         .pipe(gulpPlumber())
 
         .pipe(mustacheRender())
 
-        .pipe(filter)
+        .pipe(gulpDebug({title: 'render changed templates:'}))
+
         .pipe(gulpHtmlhint({
             'tagname-lowercase': true,
             'attr-lowercase': true,
@@ -72,15 +70,11 @@ gulp.task('templates', function(){
             'tag-self-close': true,
             'spec-char-escape': true,
             'id-unique': true,
-            'src-not-empty': true,
+            'src-not-empty': true
         }))
         .pipe(gulpHtmlhint.reporter(reporter))
-        .pipe(filter.restore())
 
         .pipe(gulpHtmlmin({collapseWhitespace: true}))
-
-        .pipe(gulpChanged(options.paths.dest.mustache))
-        .pipe(gulpDebug({title: 'render changed templates:'}))
 
         .pipe(gulp.dest(options.paths.dest.mustache));
 });

@@ -1,5 +1,4 @@
 /**
- * todo: move Mustache views in JSON and loaded into js for edit and render templates
  *
  * */
 define([

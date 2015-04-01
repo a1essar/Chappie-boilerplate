@@ -3,10 +3,12 @@
  * */
 
 /**
+ * todo: render only changed templates with partials depends
+ * todo: add generate font from otf
+ * todo: add generate css from fonts files
+ * todo: http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html
  * todo: h5bp
  * todo: webp less mixin
- * todo: gulp-jslint
- * todo: mustache views in json format and js
  * todo: cssnext;
  * todo: es6;
  * */
