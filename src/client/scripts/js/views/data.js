@@ -26,7 +26,20 @@
     }
     /*eslint-enable */
 })('data', this, function(view) {
+    var getSitemap;
     view = JSON.parse(view) || {};
+
+    getSitemap = function getSitemap() {
+        var links = {};
+
+        Object.keys(view.sitemap).forEach(function(key, i) {
+            links[view.sitemap[i].name] = view.sitemap[i];
+        });
+
+        return links;
+    };
+
+    view.getSitemap = getSitemap;
 
     return view;
 });

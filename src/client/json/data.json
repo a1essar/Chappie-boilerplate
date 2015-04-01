@@ -1,4 +1,17 @@
 {
   "title": "HappyStarter",
-  "description": "..."
+  "description": "...",
+  "sitemap": [
+    {
+      "title": "Главная",
+      "name": "main",
+      "link": "/templates/main.html"
+    },
+    {
+      "title": "Конкурс",
+      "name": "competition",
+      "link": "/templates/competition.html",
+      "isNav": true
+    }
+  ]
 }
