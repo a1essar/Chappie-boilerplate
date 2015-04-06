@@ -1,18 +1,31 @@
-/**
- *
- * */
-define([
-    'domReady',
-    'jquery',
-    'underscore',
-    'utils',
-    'spin'
-], function (domReady, $, _, utils, Spinner) {
+/*!
+ * @preserve moduleStub - description
+ * website.com
+ * (c) author date | License
+ */
+(function (name, context, definition) {
+    'use strict';
+    /*eslint-disable */
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'domReady',
+            'jquery',
+            'lodash',
+            'utils',
+            'spin'
+        ], definition);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = definition();
+    } else {
+        context[name] = definition();
+    }
+    /*eslint-enable */
+})('formSender', this, function(domReady, $, _, utils, Spinner) {
     'use strict';
 
-    console.log('%cfile: form.js', 'color: #C2ECFF');
+    console.log('%cfile: form-sender.js', 'color: #C2ECFF');
 
-    var el = '.js__ajax-form',
+    var el = '[data-ajax-form-sender]',
         defaults = {
             spinner: {
                 lines: 13,
@@ -35,13 +48,13 @@ define([
         },
         submit;
 
-    function module(options) {
-        console.log('%ctrace: module form: form()', 'color: #ccc');
+    function formSender(options) {
+        console.log('%ctrace: module formSender: formSender()', 'color: #ccc');
 
         defaults = _.extend(options, defaults);
 
         domReady(function () {
-            console.log('%ctrace: module form: form() -> domReady', 'color: #ccc');
+            console.log('%ctrace: module formSender: formSender() -> domReady', 'color: #ccc');
 
             $('body').off('click', el).on('click', el, function(e) {
                 e.preventDefault();
@@ -52,14 +65,14 @@ define([
     }
 
     submit = function submit(e) {
-        console.log('%ctrace: module form: submit()', 'color: #ccc');
+        console.log('%ctrace: module formSender: submit()', 'color: #ccc');
 
         var $el = $(e.currentTarget),
-        $form = $el.parents('form'),
-        action = $el.attr('data-action') || $form.attr('action'),
-        data = $form.serialize(),
-        caption = $el.html(),
-        spinner;
+            $form = $el.parents('form'),
+            action = $el.attr('data-action') || $form.attr('action'),
+            data = $form.serialize(),
+            caption = $el.html(),
+            spinner;
 
         $el.css('position', 'relative').css('width', $el.outerWidth()).css('height', $el.outerHeight()).html('&nbsp');
 
@@ -91,5 +104,5 @@ define([
         });
     };
 
-    return module;
+    return formSender;
 });

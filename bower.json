@@ -7,14 +7,13 @@
     "requirejs-domready": "2.0.1",
     "jquery": "^2.1.1",
     "modernizr": "^2.8.3",
-    "detectizr": "^2.0.0",
-    "underscore": "^1.7.0",
-    "backbone": "^1.1.2",
     "bootstrap": "^3.3.1",
     "normalize.css": "^3.0.2",
     "fontawesome": "^4.2.0",
     "spin.js": "^2.0.1",
-    "velocity": "^1.1.0"
+    "lodash": "~3.6.0",
+    "happymodal": "https://github.com/a1essar/happymodal.git",
+    "director": "~1.2.8"
   },
   "devDependencies": {
     "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js"

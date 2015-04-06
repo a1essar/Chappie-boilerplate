@@ -1,14 +1,26 @@
-/**
- *
- * */
-define([
-    'jquery',
-    'underscore',
-    'utils/callback',
-    'modernizr'
-], function ($, _, callback) {
+/*!
+ * @preserve moduleStub - description
+ * website.com
+ * (c) author date | License
+ */
+(function (name, context, definition) {
     'use strict';
-
+    /*eslint-disable */
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'lodash',
+            'utils/callback',
+            'modernizr'
+        ], definition);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = definition();
+    } else {
+        context[name] = definition();
+    }
+    /*eslint-enable */
+})('form', this, function($, _, callback) {
+    'use strict';
     console.log('%cfile: utils.js', 'color: #C2ECFF');
 
     var utils = {};

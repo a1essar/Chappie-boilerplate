@@ -1,8 +1,22 @@
-/**
- *
- * */
-define([
-], function () {
+/*!
+ * @preserve moduleStub - description
+ * website.com
+ * (c) author date | License
+ */
+(function (name, context, definition) {
+    'use strict';
+    /*eslint-disable */
+    if (typeof define === 'function' && define.amd) {
+        define([
+
+        ], definition);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = definition();
+    } else {
+        context[name] = definition();
+    }
+    /*eslint-enable */
+})('form', this, function() {
     'use strict';
 
     console.log('%cfile: callback.js', 'color: #C2ECFF');
@@ -38,5 +52,4 @@ define([
     };
 
     return callback;
-
 });
