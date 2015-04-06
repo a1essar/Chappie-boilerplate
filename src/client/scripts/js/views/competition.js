@@ -3,12 +3,11 @@
 (function (name, context, definition) {
     /*eslint-disable */
     if (typeof define === 'function' && define.amd) {
-        return define(['text!../../../json/competition.json'], definition);
+        define(['text!../../../json/competition.json'], definition);
     } else if (typeof module !== 'undefined' && module.exports) {
         var fs = require('fs'),
             view = fs.readFileSync('src/client/json/competition.json', 'utf8');
         module.exports = definition(view);
-        return module.exports;
     } else {
         var r = new XMLHttpRequest(),
             view;
@@ -22,7 +21,6 @@
             context[name] = definition(view);
         };
         r.send();
-        return context[name];
     }
     /*eslint-enable */
 })('competition', this, function(view) {
