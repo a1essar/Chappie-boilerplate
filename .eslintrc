@@ -136,7 +136,7 @@
     "no-inline-comments": 0,
     "no-lonely-if": 1,
     "no-mixed-spaces-and-tabs": 1,
-    "no-multiple-empty-lines": [1, {max: 2}],
+    "no-multiple-empty-lines": [1, {"max": 2}],
     "no-nested-ternary": 0,
     "no-new-object": 1,
     "no-space-before-semi": 0,

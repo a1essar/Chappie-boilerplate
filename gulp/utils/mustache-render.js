@@ -43,7 +43,7 @@ mustacheRender = function mustacheRender(options) {
         try {
             return require(name);
         } catch(err) {
-            self.emit('error', new gulpUtil.PluginError('mustacheRender', err));
+            /*self.emit('error', new gulpUtil.PluginError('mustacheRender', err));*/
         }
     }
 
