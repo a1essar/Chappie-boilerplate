@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var favicons = require('favicons');
 
 var gulp = require('gulp');
 var gulpPlumber = require('gulp-plumber');
@@ -36,6 +37,32 @@ gulp.task('optimize-images', function () {
         ;
 });
 /* end task: optimize-images */
+
+/* start task: generate-favicon */
+/* https://github.com/haydenbleasel/favicons/issues/36 http://realfavicongenerator.net/api */
+/*gulp.task('generate-favicon', function (callback) {
+    var config = {
+        files: {
+            src: 'src/client/images/favicons/src/favicon.png',
+            dest: 'src/client/images/favicons/src',
+            html: 'src/client/index.html',
+            iconsPath: 'favicons'
+        },
+        settings: {
+            appName: 'Favicons',
+            appDescription: 'Favicon generator for Node.js',
+            developer: 'Hayden Bleasel',
+            developerURL: 'http://haydenbleasel.com',
+            background: '#27353f',
+            index: 'test/favicons.html',
+            url: 'http://haydenbleasel.com',
+            logging: true
+        }
+    };
+
+    favicons(config, callback);
+});*/
+/* end task: generate-favicon */
 
 /* start task: sprites */
 gulp.task('sprites', function () {

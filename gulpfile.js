@@ -3,8 +3,7 @@
  * */
 
 /**
- * todo: remove backbone and add director.js or page.js
- * todo: remove underscore and add lodash
+ * todo: add favicon generator
  * todo: render only changed templates with partials depends
  * todo: render only changed templates with partials depends
  * todo: add generate font from otf
