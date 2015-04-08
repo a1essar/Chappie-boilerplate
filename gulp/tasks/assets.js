@@ -13,12 +13,7 @@ var options = require('../config');
 /* start task: bower:assets */
 gulp.task('bower:assets', function() {
     var vendors = mainBowerFiles({
-        paths: {
-            paths: './',
-            bowerDirectory: 'vendor',
-            bowerrc: '.bowerrc',
-            bowerJson: 'bower.json'
-        }
+        paths: './'
     });
 
     var imagesFilter = gulpFilter(['*.jpg', '*.png', '*.gif', '*.jpeg']);

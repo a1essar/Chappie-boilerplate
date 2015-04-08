@@ -15,12 +15,7 @@ var options = require('../config');
 /* start task: scripts */
 gulp.task('scripts', ['eslint'], function(callback) {
     var vendors = mainBowerFiles({
-        paths: {
-            paths: './',
-            bowerDirectory: 'vendor',
-            bowerrc: '.bowerrc',
-            bowerJson: 'bower.json'
-        },
+        paths: './',
         filter: /.js$/
     });
 
@@ -42,9 +37,9 @@ gulp.task('scripts', ['eslint'], function(callback) {
     rjs.optimize({
         baseUrl: baseUrl,
         paths: modules,
-        name: path.relative(baseUrl, 'vendor/almond/almond'),
+        name: path.relative(baseUrl, 'bower_components/almond/almond'),
         include: ['common'],
-        insertRequire: [path.relative(baseUrl, 'vendor/almond/almond')],
+        insertRequire: [path.relative(baseUrl, 'bower_components/almond/almond')],
         out: options.paths.dest.scripts + '/' + options.paths.dest.scriptFileName,
         optimize: "uglify2",
         uglify2: {

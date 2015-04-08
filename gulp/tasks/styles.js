@@ -24,19 +24,14 @@ var urlRebase = require('../utils/url-rebase');
 /* start task: styles */
 gulp.task('styles', function() {
     var vendors = mainBowerFiles({
-        paths: {
-            paths: './',
-            bowerDirectory: 'vendor',
-            bowerrc: '.bowerrc',
-            bowerJson: 'bower.json'
-        },
+        paths: './',
         filter: /.less$|.css$/
     });
 
     vendors = _.union(vendors, options.paths.styles);
 
     var stylesFilter = gulpFilter(function (file) {
-        return !/vendor/.test(file.path);
+        return !/bower_components/.test(file.path);
     });
 
     /* custom reporter for gulpCsslint*/
