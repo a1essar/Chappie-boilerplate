@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var favicons = require('favicons');
+/*var favicons = require('favicons');*/
 
 var gulp = require('gulp');
 var gulpPlumber = require('gulp-plumber');
