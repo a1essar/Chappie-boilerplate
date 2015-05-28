@@ -8,7 +8,6 @@
     /*eslint-disable */
     if (typeof define === 'function' && define.amd) {
         define([
-
         ], definition);
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = definition();
@@ -16,7 +15,7 @@
         context[name] = definition();
     }
     /*eslint-enable */
-})('form', this, function() {
+})('callback', this, function() {
     'use strict';
 
     console.log('%cfile: callback.js', 'color: #C2ECFF');

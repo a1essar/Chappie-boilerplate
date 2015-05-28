@@ -3,17 +3,42 @@
 var rjs = require('requirejs');
 var mainBowerFiles = require('main-bower-files');
 var path = require('path');
+var runSequence = require('run-sequence');
+var es = require('event-stream');
 
 var gulp = require('gulp');
 var gulpJshint = require('gulp-jshint');
 var gulpJscs = require('gulp-jscs');
 var gulpEslint = require('gulp-eslint');
 var gulpPlumber = require('gulp-plumber');
+var gulpBabel = require('gulp-babel');
 
 var options = require('../config');
 
-/* start task: scripts */
-gulp.task('scripts', ['eslint'], function(callback) {
+/* start task: es6-compiler */
+gulp.task('es6-compiler', function (callback) {
+    return gulp.src('src/client/scripts/es6/**/*.es6')
+        .pipe(gulpBabel({
+            'modules': 'amd',
+            'compact': false
+        }))
+        .pipe((function() {
+            /* disable all hinters for generate js files */
+            function render(file, callback) {
+                var content = file.contents.toString('utf8');
+                content = '//jshint ignore: start\n' + '//jscs:disable\n' + '/*eslint-disable */\n' + content + '\n/*eslint-enable */\n' + '//jscs:enable\n' + '//jshint ignore: end\n';
+                file.contents = new Buffer(content);
+                callback(null, file);
+            }
+
+            return es.map(render);
+        })())
+        .pipe(gulp.dest('src/client/scripts/js'));
+});
+/* end task: es6-compiler */
+
+/* start task: rjs */
+gulp.task('rjs', function(callback) {
     var vendors = mainBowerFiles({
         paths: './',
         filter: /.js$/
@@ -52,6 +77,12 @@ gulp.task('scripts', ['eslint'], function(callback) {
     }, function(buildResponse){
         callback();
     }, callback);
+});
+/* end task: rjs */
+
+/* start task: scripts */
+gulp.task('scripts', function(callback) {
+    runSequence('es6-compiler', 'eslint', 'rjs', callback);
 });
 /* end task: scripts */
 

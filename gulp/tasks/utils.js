@@ -6,9 +6,9 @@ var fs = require('fs');
 var gulp = require('gulp');
 var gulpPlumber = require('gulp-plumber');
 var gulpTtf2woff = require('gulp-ttf2woff');
-var gulpWebp = require('gulp-webp');
-var gulpImage = require('gulp-image');
-var gulpSpritesmith = require('gulp.spritesmith');
+//var gulpWebp = require('gulp-webp');
+//var gulpImage = require('gulp-image');
+//var gulpSpritesmith = require('gulp.spritesmith');
 
 var options = require('../config');
 
@@ -21,21 +21,21 @@ gulp.task('ttf2woff', function(){
 /* end task: ttf2woff */
 
 /* start task: images2webp */
-gulp.task('images2webp', function () {
+/*gulp.task('images2webp', function () {
     return gulp.src(options.paths.optimizeImages.src)
         .pipe(gulpWebp({quality: 60}))
         .pipe(gulp.dest(options.paths.optimizeImages.dest))
         ;
-});
+});*/
 /* end task: images2webp */
 
 /* start task: optimize-images */
-gulp.task('optimize-images', function () {
+/*gulp.task('optimize-images', function () {
     return gulp.src(options.paths.optimizeImages.src)
         .pipe(gulpImage())
         .pipe(gulp.dest(options.paths.optimizeImages.dest))
         ;
-});
+});*/
 /* end task: optimize-images */
 
 /* start task: generate-favicon */
@@ -65,7 +65,7 @@ gulp.task('optimize-images', function () {
 /* end task: generate-favicon */
 
 /* start task: sprites */
-gulp.task('sprites', function () {
+/*gulp.task('sprites', function () {
     var types = ['png', 'jpg'];
 
     types.forEach(function (type, i) {
@@ -90,7 +90,7 @@ gulp.task('sprites', function () {
     }
 
     function spriteRender(dir, type){
-        var spriteData = gulp.src('src/client/images/sprites' + '/' + type + '/' + dir + '/*.' + type)
+        var spriteData = gulp.src('src/client/images/sprites' + '/' + type + '/' + dir + '/!*.' + type)
             .pipe(gulpPlumber())
 
             .pipe(gulpSpritesmith({
@@ -111,5 +111,5 @@ gulp.task('sprites', function () {
         spriteData.css
             .pipe(gulp.dest('src/client/styles/less/sprites'));
     }
-});
+});*/
 /* end task: sprites */
