@@ -1,48 +1,54 @@
 {
-  "name": "chappie-boilerplate",
-  "version": "0.0.0",
-  "dependencies": {
-    "almond": "^0.3.0",
-    "requirejs-text": "2.0.13",
-    "requirejs-domready": "2.0.1",
-    "jquery": "^2.1.1",
-    "modernizr": "^2.8.3",
-    "bootstrap": "^3.3.1",
-    "normalize.css": "^3.0.2",
-    "fontawesome": "^4.2.0",
-    "spin.js": "^2.0.1",
-    "lodash": "~3.6.0",
-    "happymodal": "https://github.com/a1essar/happymodal.git",
-    "director": "~1.2.8"
-  },
-  "devDependencies": {
-    "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js"
-  },
-  "overrides": {
-    "requirejs-text": {
-      "main": [
-        "text.js"
-      ]
+    "name": "chappie-boilerplate",
+    "version": "0.0.0",
+    "dependencies": {
+        "almond": "^0.3.0",
+        "requirejs-text": "2.0.13",
+        "requirejs-domready": "2.0.1",
+        "jquery": "^2.1.1",
+        "modernizr": "^2.8.3",
+        "bootstrap": "^3.3.1",
+        "normalize.css": "^3.0.2",
+        "fontawesome": "^4.2.0",
+        "spin.js": "^2.0.1",
+        "lodash": "~3.6.0",
+        "happymodal": "https://github.com/a1essar/happymodal.git",
+        "director": "~1.2.8"
     },
-    "requirejs-domready": {
-      "main": [
-        "domReady.js"
-      ]
+    "devDependencies": {
+        "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js"
     },
-    "modernizr": {
-      "main": [
-        "modernizr.js"
-      ]
-    },
-    "bootstrap": {
-      "main": [
-        "dist/css/bootstrap.css",
-        "dist/js/bootstrap.js",
-        "dist/fonts/glyphicons-halflings-regular.eot",
-        "dist/fonts/glyphicons-halflings-regular.ttf",
-        "dist/fonts/glyphicons-halflings-regular.woff",
-        "dist/fonts/glyphicons-halflings-regular.woff2"
-      ]
+    "overrides": {
+        "requirejs-text": {
+            "main": [
+                "text.js"
+            ]
+        },
+        "requirejs-domready": {
+            "main": [
+                "domReady.js"
+            ]
+        },
+        "fontawesome": {
+            "main": [
+                "css/font-awesome.css",
+                "fonts/fontawesome-webfont.woff"
+            ]
+        },
+        "modernizr": {
+            "main": [
+                "modernizr.js"
+            ]
+        },
+        "bootstrap": {
+            "main": [
+                "dist/css/bootstrap.css",
+                "dist/js/bootstrap.js",
+                "dist/fonts/glyphicons-halflings-regular.eot",
+                "dist/fonts/glyphicons-halflings-regular.ttf",
+                "dist/fonts/glyphicons-halflings-regular.woff",
+                "dist/fonts/glyphicons-halflings-regular.woff2"
+            ]
+        }
     }
-  }
 }
