@@ -57,9 +57,9 @@ var config = {
         'dest': {
             'main': 'dist',
             'server': 'dist/server',
-            'scripts': 'dist/scripts/js',
+            'scripts': 'dist/scripts',
             'scriptFileName': 'script.min.js',
-            'styles': 'dist/styles/css',
+            'styles': 'dist/styles',
             'styleFileName': 'style.min.css',
             'fonts': 'dist/fonts',
             'images': 'dist/images',

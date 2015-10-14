@@ -4,15 +4,12 @@
 
 /**
  * todo: add favicon generator
- * todo: render only changed templates with partials depends
- * todo: render only changed templates with partials depends
  * todo: add generate font from otf
  * todo: add generate css from fonts files
  * todo: http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html
  * todo: h5bp
  * todo: webp less mixin
  * todo: cssnext;
- * todo: es6;
  * */
 'use strict';
 
@@ -20,7 +17,7 @@ var del = require('del');
 var runSequence = require('run-sequence');
 var vinylPaths = require('vinyl-paths');
 var requireDir = require('require-dir');
-var browserSync = require('browser-sync');
+var bs = require('browser-sync').create();
 
 var gulp = require('gulp');
 var gulpChanged = require('gulp-changed');
@@ -28,6 +25,19 @@ var gulpChanged = require('gulp-changed');
 var options = require('./gulp/config');
 
 var tasks = requireDir('./gulp/tasks');
+
+/* start task: browser-sync */
+gulp.task('bs', function(callback) {
+    bs.init({
+        notify: false,
+        server: {
+            baseDir: 'dist'
+        },
+        online: true,
+        'no-online': true
+    }, callback);
+});
+/* end: browser-sync */
 
 /* start copy:main */
 gulp.task('copy:main', function (callback) {
@@ -66,14 +76,31 @@ gulp.task('go', function(callback) {
         callback);
 });
 
-gulp.task('watch', ['go', 'browser-sync'], function () {
-    gulp.watch(options.paths.watch.styles, ['styles', browserSync.reload]);
-    gulp.watch(options.paths.watch.scripts, ['scripts', browserSync.reload]);
-    gulp.watch(options.paths.watch.main, ['copy:main', browserSync.reload]);
-    gulp.watch(options.paths.watch.assets, ['copy:assets', browserSync.reload]);
-    gulp.watch(options.paths.watch.templates, ['copy:templates', browserSync.reload]);
-    gulp.watch(options.paths.watch.mustache, ['templates', browserSync.reload]);
-    gulp.watch(options.paths.watch.views, ['templates', browserSync.reload]);
+gulp.task('watch:go', function(callback) {
+    runSequence('go',
+        ['bs'],
+        callback);
+});
+
+gulp.task('watch', ['watch:go'], function () {
+    gulp.watch(options.paths.watch.styles, ['styles']);
+    gulp.watch(options.paths.watch.scripts, ['scripts']);
+    gulp.watch(options.paths.watch.main, ['copy:main']);
+    gulp.watch(options.paths.watch.assets, ['copy:assets']);
+    gulp.watch(options.paths.watch.templates, ['copy:templates']);
+    gulp.watch(options.paths.watch.mustache, ['templates']);
+    gulp.watch(options.paths.watch.views, ['templates']);
+
+    gulp.watch([
+        'dist/**/*.html',
+        'dist/**/*.css',
+        'dist/**/*.js',
+        'dist/**/*.json',
+        'dist/**/*.jpg',
+        'dist/**/*.png',
+        'dist/**/*.svg',
+        'dist/**/*.woff'
+    ]).on('change', bs.reload);
 });
 
 gulp.task('watch:server', ['copy:server'], function () {

@@ -22,7 +22,7 @@ gulp.task('copy:templates', function (callback) {
 /* end copy:templates */
 
 /* start task: templates */
-gulp.task('templates', function(){
+gulp.task('templates', function() {
 
     /* custom reporter function for gulpHtmlhint*/
     var reporter = function reporter(file) {
