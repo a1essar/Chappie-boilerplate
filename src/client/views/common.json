@@ -8,9 +8,9 @@
       "link": "/templates/main.html"
     },
     {
-      "title": "Конкурс",
-      "name": "competition",
-      "link": "/templates/competition.html",
+      "title": "Mustache",
+      "name": "mustache",
+      "link": "/templates/mustache.html",
       "isNav": true
     }
   ]

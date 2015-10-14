@@ -1,8 +1,8 @@
 {{> head}}
 {{> header}}
 <main class="container">
-    <p>{{#getSitemap}}{{competition.title}}{{/getSitemap}}</p>
-    {{#list}}
+    <p>{{#common.getSitemap}}{{mustache.title}}{{/common.getSitemap}}</p>
+    {{#example.list}}
     <div class="col-md-4">
         <div class="thumbnail">
             <img src="{{image}}" />
@@ -13,6 +13,6 @@
             </div>
         </div>
     </div>
-    {{/list}}
+    {{/example.list}}
 </main>
 {{> footer}}

@@ -6,15 +6,11 @@ var _ = require('underscore'),
     path = require('path'),
     mustache = require('mustache'),
     gulpUtil = require('gulp-util'),
-
     mustacheRender;
 
 mustacheRender = function mustacheRender(options) {
     var self,
-        data = [],
-        templates = {},
-        views = {},
-        partials = {};
+        data = [];
 
     options = _.extend({
         extension: '.html',
@@ -36,28 +32,24 @@ mustacheRender = function mustacheRender(options) {
 
         self = this;
 
-        dataLoader();
+        var promise = new Promise(function(resolve, reject) {
+            getViews(resolve);
+        });
+
+        promise.then(function(args) {
+            args.templates = getTemplates();
+            return args;
+        }).then(function(args) {
+            render(args.templates, args.views);
+        });
     }
 
-    function viewsLoader(name) {
-        try {
-            return require(name);
-        } catch(err) {
-            /*self.emit('error', new gulpUtil.PluginError('mustacheRender', err));*/
-        }
-    }
+    function render(templates, views) {
+        templates.partials = _.extend(templates.partials, options.partials);
 
-    function render() {
-        partials = _.extend(partials, options.partials);
-
-        /* Load base view and add to all views */
-
-        var dataView = viewsLoader('../../src/client/scripts/js/views/data.js') || {};
-
-        Object.keys(templates).forEach(function(key, i) {
-            mustache.parse(templates[key]);
-            var view = _.extend(views[key], dataView),
-                content = mustache.render(templates[key], view, partials);
+        Object.keys(templates.full).forEach(function(key, i) {
+            mustache.parse(templates.full[key]);
+            var content = mustache.render(templates.full[key], views, templates.partials);
 
             data[i].contents = new Buffer(content);
             data[i].path = gulpUtil.replaceExtension(data[i].path, options.extension);
@@ -70,36 +62,83 @@ mustacheRender = function mustacheRender(options) {
         });
     }
 
-    function dataLoader() {
-        var dataLength = data.length,
-            dataIndex = 0;
+    function getViews(resolve) {
+        var views = {},
+            files;
+
+        files = getFiles('src/client/views');
+
+        files.forEach(function(el, i) {
+            var ext = path.extname(el),
+                viewName = path.basename(el, ext),
+                view;
+
+            if (ext === '.js') {
+                try {
+                    delete require.cache[require.resolve('../../' + el)];
+                    view = require('../../' + el);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            if (ext === '.json' && !views[viewName]) {
+                try {
+                    view = fs.readFileSync(el, 'utf8');
+                    view = JSON.parse(view);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            if (view) {
+                views[viewName] = view;
+            }
+        });
+
+        resolve({
+            views: views
+        });
+    }
+
+    function getTemplates() {
+        var templates = {
+                full: [],
+                partials: []
+            };
 
         data.forEach(function(el, i) {
             var ext = path.extname(data[i].path),
-                name = path.basename(data[i].path).replace(ext, ''),
-                view,
-                viewPath = '../../src/client/scripts/js/views/' + name + '.js';
+                name = path.basename(data[i].path).replace(ext, '');
 
             if (path.dirname(data[i].path).indexOf('partials') < 0) {
-                view = viewsLoader(viewPath);
-
-                if (!view) {
-                    view = {};
-                }
-
-                views[name] = view;
-
-                templates[name] = data[i].contents.toString('utf8');
+                templates.full[name] = data[i].contents.toString('utf8');
             } else {
-                partials[name] = data[i].contents.toString('utf8');
+                templates.partials[name] = data[i].contents.toString('utf8');
             }
-
-            if (dataIndex === dataLength - 1) {
-                render();
-            }
-
-            dataIndex++;
         });
+
+        return templates;
+    }
+
+    function getFiles(dir, data, allFiles) {
+        dir = dir || '.';
+        data = data || {};
+        allFiles = allFiles || [];
+
+        var files = fs.readdirSync(dir);
+
+        files.forEach(function(el, i) {
+            var name = dir + '/' + files[i];
+
+            if (fs.statSync(name).isDirectory()){
+                getFiles(name, data, allFiles);
+            } else {
+                allFiles.push(name);
+            }
+        });
+
+        return allFiles;
     }
 
     return es.through(bufferContents, endStream);

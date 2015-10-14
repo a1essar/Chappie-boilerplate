@@ -114,8 +114,13 @@ var config = {
             ],
             'mustache': [
                 'src/client/templates/mustache/*.mustache',
-                'src/client/templates/mustache/**/*.mustache',
-                'src/client/scripts/js/views/**/*.js'
+                'src/client/templates/mustache/**/*.mustache'
+            ],
+            'views': [
+                'src/client/views/*.js',
+                'src/client/views/**/*.js',
+                'src/client/views/*.json',
+                'src/client/views/**/*.json'
             ],
             'styles': ['src/client/styles/css/*.css', 'src/client/styles/less/*.less', 'src/client/styles/less/**/*.less'],
             'scripts': ['src/client/scripts/js/*.js', 'src/client/scripts/js/**/*.js']

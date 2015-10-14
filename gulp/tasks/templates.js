@@ -25,7 +25,7 @@ gulp.task('copy:templates', function (callback) {
 gulp.task('templates', function(){
 
     /* custom reporter function for gulpHtmlhint*/
-    var reporter = function reporter(file){
+    var reporter = function reporter(file) {
         var c = gulpUtil.colors;
 
         var errorCount = file.htmlhint.errorCount;
@@ -57,7 +57,7 @@ gulp.task('templates', function(){
 
         .pipe(mustacheRender())
 
-        .pipe(gulpDebug({title: 'render changed templates:'}))
+        .pipe(gulpDebug({title: 'render templates:'}))
 
         .pipe(gulpHtmlhint({
             'tagname-lowercase': true,

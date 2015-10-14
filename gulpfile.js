@@ -73,6 +73,7 @@ gulp.task('watch', ['go', 'browser-sync'], function () {
     gulp.watch(options.paths.watch.assets, ['copy:assets', browserSync.reload]);
     gulp.watch(options.paths.watch.templates, ['copy:templates', browserSync.reload]);
     gulp.watch(options.paths.watch.mustache, ['templates', browserSync.reload]);
+    gulp.watch(options.paths.watch.views, ['templates', browserSync.reload]);
 });
 
 gulp.task('watch:server', ['copy:server'], function () {
